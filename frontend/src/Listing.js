@@ -8,16 +8,17 @@ import Header from "./Header";
 import queryString from "query-string";
 import Search from "./Search";
 import "styles/listing.scss";
-import { images } from "./images";
 
 class Listing extends Component {
   constructor(props) {
     super(props);
   }
   componentDidMount() {
-    const { location } = queryString.parse(this.props.location.search);
+    const guests = this.props.searchQuery.guests;
     this.props.fetchSearchResults({
-      location
+      ...this.props.searchQuery,
+      guests: guests.adults + guests.children,
+      pets: guests.pets
     });
   }
   render() {
@@ -26,7 +27,7 @@ class Listing extends Component {
       <div className="listing">
         <div className="top-container">
           <Header showLogin userInfo={this.props.userInfo} />
-          <Search query={this.props.query} />
+          <Search searchQuery={this.props.searchQuery} />
         </div>
         {isLoading ? (
           <div className="loader">
@@ -73,6 +74,8 @@ class Listing extends Component {
 }
 
 const mapStateToProps = state => ({
+  userInfo: state.login.userInfo,
+  searchQuery: state.home.search,
   properties: state.listing.properties,
   isLoading: state.listing.isLoading
 });

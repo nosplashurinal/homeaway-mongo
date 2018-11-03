@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ImageGallery from "templates/ImageGallery";
-import { fetchPropertyDetails } from "actions";
+import { fetchPropertyDetails, book } from "actions";
 import axios from "axios";
 import PropertyDetails from "./PropertyDetails";
 import { connect } from "react-redux";
@@ -9,6 +9,7 @@ import Search from "./Search";
 import { images } from "./images";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
+import { toastr } from "react-redux-toastr";
 import "styles/productPage.scss";
 
 const item = {
@@ -28,9 +29,7 @@ class Property extends Component {
     this.state = {
       isFullScreen: false,
       currentImagePos: 0,
-      details: undefined,
-      goToLogin: false,
-      isBookingSuccessful: undefined
+      goToLogin: false
     };
   }
   componentDidMount() {
@@ -48,25 +47,22 @@ class Property extends Component {
       this.setState({ goToLogin: true });
     } else {
       const data = {
-        propertyid: this.props.location.pathname.split("Property/")[1],
-        startdate: moment(this.props.query.startDate).format("YYYY-MM-DD"),
-        enddate: moment(this.props.query.endDate).format("YYYY-MM-DD")
+        propertyid: this.props.details._id,
+        startdate: moment(this.props.searchQuery.startDate).format("YYYY-MM-DD"),
+        enddate: moment(this.props.searchQuery.endDate).format("YYYY-MM-DD")
       };
-      axios.post("http://localhost:3001/Booking", data).then(response => {
-        console.log("Axios POST response:", response.status);
-
-        if (response.status === 200) {
-          console.log("booking success");
-          this.setState({ isBookingSuccessful: true });
-          this.props.setUserInfo(response.data);
-        } else {
-          console.log("Booking unsuccessful!");
-          this.setState({ isBookingSuccessful: false });
-        }
-      });
+      this.props.onBook(data);
     }
   };
-
+  componentDidUpdate(prevProps, prevState) {
+    const {bookingInfo} = this.props;
+    if(!prevProps.bookingInfo && bookingInfo) {
+      const startdate = moment(bookingInfo.startdate).format("dddd, MMMM Do YYYY");
+      const enddate = moment(bookingInfo.enddate).format("dddd, MMMM Do YYYY");
+      toastr.success("Success!", `Your reservation between ${startdate} and ${enddate} has been made. Hope you enjoy your stay!`)
+      this.props.history.push("/Traveler/trips");
+    }
+  }
   render() {
     const {
       goToLogin,
@@ -78,15 +74,11 @@ class Property extends Component {
     if (goToLogin) {
       return <Redirect to="/TravellerLogin" />;
     }
-    if (isBookingSuccessful) {
-      return <Redirect to="/Traveler/trips" />;
-    }
-    console.log(details);
     return (
       <div className="product-page">
         <div className="headers">
           <Header showLogin userInfo={this.props.userInfo} />
-          <Search query={this.props.query} />
+          <Search searchQuery={this.props.searchQuery} />
         </div>
         <div className="top-container">
           {details.photos ? (
@@ -138,11 +130,15 @@ class Property extends Component {
 }
 
 const mapStateToProps = state => ({
-  details: { ...state.property } || null
+  userInfo: state.login.userInfo,
+  searchQuery: state.home.search,
+  details: { ...state.property.details } || null,
+  bookingInfo: state.property.bookingInfo || null
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchPropertyDetails: id => dispatch(fetchPropertyDetails(id))
+  fetchPropertyDetails: id => dispatch(fetchPropertyDetails(id)),
+  onBook: data => dispatch(book(data))
 });
 
 export default connect(

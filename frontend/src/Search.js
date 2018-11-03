@@ -19,95 +19,73 @@ class Search extends Component {
     super(props);
     this.state = {
       dropdownIsOpen: false,
-      startDate: null,
-      endDate: null,
-      guests: {
-        adults: 1,
-        children: 0,
-        pets: false
-      },
-      location: null,
       showError: false
     };
   }
-  updateAdultGuests = i => {
-    const guests = {
-      ...this.state.guests,
-      adults: i
-    };
-    this.setState({ guests });
-  };
-  updateChildrenGuests = i => {
-    const guests = {
-      ...this.state.guests,
-      children: i
-    };
-    this.setState({ guests });
-  };
   onEnter = () => {
     this.onClickSearch();
-  }
+  };
   toggleDropdown = () =>
     this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
   onClickSearch = () => {
-    const {location} = this.state;
-    this.props.onClick({
-      location,
-    });
+    this.props.userInfo && this.props.searchQuery.location === undefined
+      ? this.setState({ showError: true })
+      : this.props.onClick(this.props.searchQuery);
   };
   render() {
-    const {
-      guests,
-      startDate,
-      endDate,
-      focusedInput,
-      dropdownIsOpen,
-      location,
-      showError
-    } = this.state;
-    const { query } = this.props;
+    const { guests, startDate, endDate, location } = this.props.searchQuery;
+    const { showError, dropdownIsOpen, focusedInput } = this.state;
     return (
       <div className="search">
         <input
           className={`location-search${showError && !location ? " error" : ""}`}
           placeholder={`${
-            query !== undefined
-              ? query.location
-              : "Where do you want to go?"
+            location !== undefined ? location : "Where do you want to go?"
           }`}
-          onKeyPress={(e) => e.key == 'Enter' && this.onEnter()}
+          onKeyPress={e => e.key == "Enter" && this.onEnter()}
           onFocus={() => this.setState({ showError: false })}
-          onChange={(e) => this.setState({ location: e.target.value })}
+          onChange={e =>
+            this.props.onChange({
+              ...this.props.searchQuery,
+              location: e.target.value
+            })
+          }
         />
         <div className="v-line" />
-        <button
+        <div
           className={`my-date-range${
             showError && !startDate && !endDate ? " error" : ""
           }`}
           onClick={() => this.setState({ showError: false })}
         >
           <DateRangePicker
-            startDate={startDate} // momentPropTypes.momentObj or null,
+            startDate={startDate === null ? null : moment(startDate)} // momentPropTypes.momentObj or null,
             startDateId="listing_header_start_date" // PropTypes.string.isRequired,
-            endDate={endDate} // momentPropTypes.momentObj or null,
+            endDate={endDate === null ? null : moment(endDate)} // momentPropTypes.momentObj or null,
             endDateId="listing_header_end_date" // PropTypes.string.isRequired,
             startDatePlaceholderText={
-              query === undefined
+              startDate === null
                 ? "Arrive"
-                : moment(query.startDate).format("YYYY-MM-DD")
+                : moment(startDate).format("YYYY-MM-DD")
             }
             endDatePlaceholderText={
-              query === undefined
-                ? "Depart"
-                : moment(query.endDate).format("YYYY-MM-DD")
+              endDate === null ? "Depart" : moment(endDate).format("YYYY-MM-DD")
             }
-            onDatesChange={({ startDate, endDate }) =>
-              this.setState({ startDate, endDate })
-            } // PropTypes.func.isRequired,
+            onDatesChange={({ startDate, endDate }) => {
+              const formattedStartDate =
+                startDate !== null ? startDate.format("YYYY-MM-DD") : null;
+              const formattedEndDate =
+                endDate !== null ? endDate.format("YYYY-MM-DD") : null;
+              this.props.onChange({
+                ...this.props.searchQuery,
+                startDate: formattedStartDate,
+                endDate: formattedEndDate
+              });
+            }} // PropTypes.func.isRequired,
             focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
             onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
           />
-        </button>
+        </div>
         <div className="v-line" />
         <div
           className="dropdown-group"
@@ -136,7 +114,8 @@ class Search extends Component {
               ]}
               checked={guests.pets ? "yes" : "no"}
               onChange={i =>
-                this.setState({
+                this.props.onChange({
+                  ...this.props.searchQuery,
                   guests: {
                     ...guests,
                     pets: i === "yes" ? true : false
@@ -167,8 +146,7 @@ class Search extends Component {
           >
             <PopoverHeader>Error</PopoverHeader>
             <PopoverBody>
-              {location || <p>Please choose a location.</p>}
-              {(!!startDate && !!endDate) || <p>Select valid dates</p>}
+              {location || <p>Please enter a location.</p>}
             </PopoverBody>
           </Popover>
         </div>

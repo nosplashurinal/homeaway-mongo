@@ -7,7 +7,8 @@ import "styles/ownerLogin.scss";
 class OwnerLogin extends Component {
   state = {
     showEmailError: false,
-    showLoginError: false
+    showLoginError: false,
+    showApiError: false
   };
   validateEmail = email => {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -23,8 +24,11 @@ class OwnerLogin extends Component {
       ? handleSubmit({ ...account, type: "owner" })
       : this.setState({ showEmailError: true });
   };
+  static getDerivedStateFromProps(props, state) {
+    return props.errorMessage ? { ...state, showApiError: true } : null;
+  }
   render() {
-    const { account, authFlag, showLoginError } = this.props;
+    const { account, errorMessage } = this.props;
     return (
       <div className="owner-login">
         <Header hideLyp />
@@ -75,14 +79,19 @@ class OwnerLogin extends Component {
                 className="btn-login"
                 name="login"
                 onClick={this.handleSubmit}
+                id="Popover2"
               >
                 Log in
               </button>
-              {showLoginError && (
-                <small className="my-error">
-                  Email or password is incorrect.
-                </small>
-              )}
+              <Popover
+                className="error-popup"
+                placement="bottom"
+                isOpen={this.state.showApiError}
+                target="Popover2"
+              >
+                <PopoverHeader>Error</PopoverHeader>
+                <PopoverBody>{errorMessage}</PopoverBody>
+              </Popover>
             </form>
           </div>
         </div>

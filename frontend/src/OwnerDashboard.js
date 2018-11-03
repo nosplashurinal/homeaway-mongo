@@ -5,7 +5,8 @@ import Header from "./Header";
 import Inbox from "./Inbox";
 import AddProperty from "./AddProperty";
 import { toastr } from "react-redux-toastr";
-import { Link, Redirect, Route } from "react-router-dom";
+import MyProperties from "./MyProperties";
+import { Link, Redirect, Route, Switch } from "react-router-dom";
 import { Button, Form, FormGroup, Input } from "reactstrap";
 import axios from "axios";
 import {
@@ -184,17 +185,24 @@ class OwnerDashboard extends Component {
         : toastr.error(
             `There has been some problem while adding your property. Please try again.`
           );
+      this.props.history.push("/OwnerDashboard/properties");
     }
+  }
+  static getDerivedStateFromProps(props, state) {
+    if(props.addPropertyStatus == 200) {
+      return {
+        ...state,
+        activeNav: 'properties'
+      }
+    } else return null;
   }
   setActiveNav = item => this.setState({ activeNav: item.value });
   render() {
-    console.log(this.props.userInfo._id);
     if (!this.props.userInfo) {
+      toastr.warning("Hold On!", "You're not signed in.")
       return <Redirect to="/OwnerLogin" />;
-    } else if (this.props.addPropertyStatus == 200) {
-      return <Redirect to="/OwnerDashboard/profile" />;
     }
-    const { activeFormGroup, properties, activeNav } = this.state;
+    const { activeFormGroup, activeNav } = this.state;
     return (
       <div className="od">
         <Header
@@ -216,27 +224,36 @@ class OwnerDashboard extends Component {
           ))}
         </ul>
         <div className="top-container">
-          <Route
-            path="/OwnerDashboard/properties"
-            render={() => <MyProperties properties={properties} onLoad={() => this.props.fetchMyProperties()} />}
-          />
-          <Route
-            path="/OwnerDashboard/add-new"
-            render={() => (
-              <AddProperty onAdd={data => this.props.onAddProperty(data)} />
-            )}
-          />
-          <Route
-            path="/OwnerDashboard/profile"
-            render={() => (
-              <Profile
-                activeItem={activeFormGroup}
-                onFocus={activeFormGroup => this.setState({ activeFormGroup })}
-                userInfo={this.props.userInfo}
-              />
-            )}
-          />
-          <Route path="/OwnerDashboard/inbox" render={() => <Inbox />} />
+          <Switch>
+            <Route
+              path="/OwnerDashboard/properties"
+              render={() => (
+                <MyProperties
+                  properties={this.props.properties}
+                  onLoad={() => this.props.fetchMyProperties()}
+                />
+              )}
+            />
+            <Route
+              path="/OwnerDashboard/add-new"
+              render={() => (
+                <AddProperty onAdd={data => this.props.onAddProperty(data)} />
+              )}
+            />
+            <Route
+              path="/OwnerDashboard/profile"
+              render={() => (
+                <Profile
+                  activeItem={activeFormGroup}
+                  onFocus={activeFormGroup =>
+                    this.setState({ activeFormGroup })
+                  }
+                  userInfo={this.props.userInfo}
+                />
+              )}
+            />
+            <Route path="/OwnerDashboard/inbox" render={() => <Inbox />} />
+          </Switch>
         </div>
       </div>
     );

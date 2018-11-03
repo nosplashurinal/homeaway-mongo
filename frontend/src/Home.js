@@ -6,8 +6,8 @@ import Search from "./Search";
 import RecentActivity from "./RecentActivity";
 import Header from "./Header";
 import "styles/home.scss";
+import { toastr } from "react-redux-toastr";
 import { Redirect } from "react-router-dom";
-import { userInfo } from "os";
 import moment from "moment";
 
 class Home extends Component {
@@ -17,17 +17,22 @@ class Home extends Component {
       goToListing: false
     };
   }
-  onClickSearch = query => {
-    const startDate = moment(query.startDate).format("YYYY-MM-DD");
-    const endDate = moment(query.startDate).format("YYYY-MM-DD");
-    this.props.saveSearch(query);
-    this.setState({ goToListing: true });
+  onClickSearch = () => {
+    this.props.userInfo
+      ? this.setState({ goToListing: true })
+      : (this.props.history.push("/TravelerLogin"), toastr.warning('Hold On!', 'Please take a moment to login.'));
   };
+  onChangeSearch = query => this.props.saveSearch(query);
   render() {
-    const { location } = this.props;
+    const { location, startDate, endDate, guests } = this.props.search;
+    const guestTotal = guests.adults + guests.children;
+    const pets = guests.pets;
     if (this.state.goToListing) {
-      const query = { location };
-      return <Redirect to={`/Listing?location=${location}`} />;
+      return (
+        <Redirect
+          to={`/Listing?location=${location}&startDate=${startDate}&endDate=${endDate}&guests=${guestTotal}&pets=${pets}`}
+        />
+      );
     }
     return (
       <div className="home">
@@ -38,7 +43,12 @@ class Home extends Component {
             <br />
             condos and more, worldwide.
           </h1>
-          <Search onClick={i => this.onClickSearch(i)} />
+          <Search
+            userInfo={this.props.userInfo}
+            onClick={i => this.onClickSearch(i)}
+            onChange={i => this.onChangeSearch(i)}
+            searchQuery={this.props.search}
+          />
           <ul className="message-container">
             <li>
               <h4>Your whole vacation starts here</h4>
@@ -60,10 +70,12 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  location: state.home.location,
-  userInfo: state.login.userInfo
-});
+const mapStateToProps = state => {
+  return {
+    search: state.home.search,
+    userInfo: state.login.userInfo
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   saveSearch: query => dispatch(saveSearch(query))

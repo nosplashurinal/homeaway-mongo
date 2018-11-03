@@ -9,7 +9,7 @@ class Pricing extends React.Component {
     };
   }
   componentWillUnmount() {
-    this.props.onChange(this.state);
+    this.props.onChange(this.state.price);
   }
   render() {
     const { price } = this.state;

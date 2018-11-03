@@ -36,7 +36,8 @@ class AddProperty extends Component {
         type: "",
         bedrooms: "",
         bathrooms: "",
-        accomodates: ""
+        accomodates: "",
+        photos: []
       }
     };
   }
@@ -47,7 +48,10 @@ class AddProperty extends Component {
           <Location
             values={this.state.location}
             onChange={values =>
-              this.setState({ ...this.state, values: { ...values } })
+              this.setState({
+                ...this.state,
+                values: { ...this.state.values, ...values }
+              })
             }
             nextButton={() => (
               <NextButton onClickNext={() => this.onClickNext()} />
@@ -59,7 +63,10 @@ class AddProperty extends Component {
           <Details
             values={this.state.details}
             onChange={values =>
-              this.setState({ ...this.state, values: { ...values } })
+              this.setState({
+                ...this.state,
+                values: { ...this.state.values, ...values }
+              })
             }
             nextButton={() => (
               <NextButton onClickNext={() => this.onClickNext()} />
@@ -69,6 +76,12 @@ class AddProperty extends Component {
       case "photos":
         return (
           <Photos
+            onChange={value =>
+              this.setState({
+                ...this.state,
+                values: { ...this.state.values, photos: value }
+              })
+            }
             nextButton={() => (
               <NextButton onClickNext={() => this.onClickNext()} />
             )}
@@ -78,8 +91,11 @@ class AddProperty extends Component {
         return (
           <Pricing
             price={this.state.price}
-            onChange={values =>
-              this.setState({ ...this.state, values: { ...values } })
+            onChange={value =>
+              this.setState({
+                ...this.state,
+                values: { ...this.state.values, price: value }
+              })
             }
             handleSubmit={() => {
               this.handleSubmit();
@@ -94,6 +110,8 @@ class AddProperty extends Component {
     }
   };
   handleSubmit = () => {
+    console.log("onhandlesubmit", this.state.values);
+    console.log("Photos is", this.state.values.photos);
     this.props.onAdd(this.state.values);
   };
   onClickNext = () => {
@@ -112,6 +130,7 @@ class AddProperty extends Component {
   // };
   render() {
     const { activeNav } = this.state;
+    console.log(this.state.values);
     return (
       <div className="owner-container">
         <div className="form-box">

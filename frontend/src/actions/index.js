@@ -119,15 +119,15 @@ export const registerUser = data => {
         dispatch(registerSuccess(res.data));
       })
       .catch(err => {
-        dispatch(registerFailure());
+        dispatch(registerFailure(err.response.data));
       });
   };
 };
 
-export const saveSearch = query => {
+export const saveSearch = data => {
   return {
     type: types.SAVE_SEARCH,
-    query
+    data
   };
 };
 
@@ -139,6 +139,26 @@ export const fetchSearchResults = params => {
       },
       err => {
         console.log("Failed to fetch Search Results!");
+      }
+    );
+  };
+};
+
+const saveOwnerProperties = data => {
+  return {
+    type: types.SAVE_PROPERTIES,
+    data
+  };
+};
+
+export const fetchProperties = () => {
+  return dispatch => {
+    return axios.get(`http://localhost:3001/OwnerDash`).then(
+      res => {
+        dispatch(saveOwnerProperties({ properties: res.data }));
+      },
+      err => {
+        console.log("Failed to fetch your properties!");
       }
     );
   };
@@ -165,5 +185,30 @@ export const addProperty = data => {
         console.log("Axios POST response:", response.status);
         dispatch(saveAddPropertyStatus(response.status));
       });
+  };
+};
+
+const bookingSuccess = data => {
+  return {
+    type: types.BOOKING_SUCCESS,
+    data
+  };
+};
+
+const bookingFailure = () => {
+  return {
+    type: types.BOOKING_FAILURE
+  };
+};
+
+export const book = data => {
+  return dispatch => {
+    return axios.post("http://localhost:3001/Booking", data).then(response => {
+      if (response.status === 200) {
+        dispatch(bookingSuccess(response.data));
+      } else {
+        dispatch(bookingFailure());
+      }
+    });
   };
 };

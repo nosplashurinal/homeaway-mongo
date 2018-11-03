@@ -7,7 +7,8 @@ import "styles/login.scss";
 class Login extends Component {
   state = {
     signUpFlag: false,
-    showEmailError: false
+    showEmailError: false,
+    showApiError: false
   };
   validateEmail = email => {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -27,6 +28,9 @@ class Login extends Component {
     e.preventDefault();
     this.setState({ signUpFlag: true });
   };
+  static getDerivedStateFromProps(props, state) {
+    return props.errorMessage ? { ...state, showApiError: true } : null;
+  }
   render() {
     const { title, account, authFlag, errorMessage } = this.props;
     return (
@@ -34,10 +38,7 @@ class Login extends Component {
         <Header />
         <h2>Login to HomeAway</h2>
         <p>
-          Need an account?{" "}
-          <Link to="/Register:traveler">
-            Sign Up
-          </Link>
+          Need an account? <Link to="/Register:traveler">Sign Up</Link>
         </p>
         <form onSubmit={this.handleSubmit}>
           <h3>Account Login</h3>
@@ -51,10 +52,11 @@ class Login extends Component {
               value={account.email}
               onChange={this.handleChange}
               onKeyPress={e => e.key == "Enter" && this.onEnter()}
-              onFocus={() => this.setState({ showEmailError: false })}
+              onFocus={() => this.setState({ showEmailError: false, showApiError: false })}
               id="Popover1"
             />
             <Popover
+              className="error-popup"
               placement="right"
               isOpen={this.state.showEmailError}
               target="Popover1"
@@ -70,6 +72,7 @@ class Login extends Component {
             placeholder="Password"
             value={account.password}
             onKeyPress={e => e.key == "Enter" && this.onEnter()}
+            onFocus={() => this.setState({ showEmailError: false, showApiError: false })}
             onChange={this.handleChange}
           />
           <button
@@ -78,14 +81,19 @@ class Login extends Component {
             className="btn-login"
             name="login"
             onClick={this.handleSubmit}
+            id="Popover2"
           >
             Log in
           </button>
-          {errorMessage && (
-            <small className="my-error">
-              {errorMessage}
-            </small>
-          )}
+          <Popover
+            className="error-popup"
+            placement="bottom"
+            isOpen={this.state.showApiError}
+            target="Popover2"
+          >
+            <PopoverHeader>Error</PopoverHeader>
+            <PopoverBody>{errorMessage}</PopoverBody>
+          </Popover>
         </form>
       </div>
     );

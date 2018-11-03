@@ -7,8 +7,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 const PropModel = require("../models/property");
 
 function handle_request(msg, callback) {
-  let { headline, accomodates, bathrooms, bedrooms, type } = msg.details;
-  let { price, city, photos } = msg;
+  let { headline, accomodates, bathrooms, bedrooms, type, price, city, photos } = msg;
   let Name = headline;
   let Sleeps = accomodates;
   let Bathrooms = bathrooms;

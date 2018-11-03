@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Header from "./Header";
 import axios from "axios";
+import { toastr } from "react-redux-toastr";
 import { registerUser } from "actions";
 import "styles/login.scss";
 import { Link, Redirect } from "react-router-dom";
@@ -11,7 +12,8 @@ const Register = ({
   handleSubmit,
   handleChange,
   signUpFormIsOpen,
-  openSignupForm
+  openSignupForm,
+  onEnter
 }) => {
   return (
     <div className="register">
@@ -50,6 +52,7 @@ const Register = ({
               type="password"
               name="password"
               placeholder="Password"
+              onKeyPress={e => e.key == "Enter" && onEnter()}
               onChange={handleChange}
             />
             <button
@@ -102,16 +105,22 @@ class RegisterContainer extends Component {
     account[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ account });
   };
-
+  componentDidUpdate() {
+    if (this.props.registerSuccess) {
+      toastr.success(this.props.message);
+    }
+  }
+  onEnter = () => this.props.handleSubmit();
   render() {
     const { signUpFormIsOpen, account } = this.state;
     if (this.props.registerSuccess === true) {
-      return <Redirect to="/TravellerLogin" />;
+      return <Redirect to="/TravelerLogin" />;
     } else {
       return (
         <Register
           {...this.props}
           handleChange={this.handleChange}
+          onEnter={this.onEnter}
           account={account}
           signUpFormIsOpen={signUpFormIsOpen}
           openSignupForm={() => this.setState({ signUpFormIsOpen: true })}
@@ -122,7 +131,8 @@ class RegisterContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  registerSuccess: state.register.isRegistered
+  registerSuccess: state.register.isRegistered,
+  message: state.register.message
 });
 
 const mapDispatchToProps = dispatch => ({
