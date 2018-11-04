@@ -56,8 +56,8 @@ const multiparty = require("multiparty");
 
 // configure the keys for accessing AWS
 AWS.config.update({
-  accessKeyId: "AKIAIJOS5DW5DY4ZELJA",
-  secretAccessKey: "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"
+  accessKeyId: "",
+  secretAccessKey: ""
 });
 
 // configure AWS to work with promises
@@ -146,9 +146,9 @@ app.use("/Booking", require("./routes/booking"));
 app.use("/Photo", require("./routes/photo"));
 app.use("/Home", require("./routes/home"));
 app.use("/AddMessage", require("./routes/messages"));
-app.get('*.js', function (req, res, next) {
-  req.url = req.url + '.gz';
-  res.set('Content-Encoding', 'gzip');
+app.get("*.js", function(req, res, next) {
+  req.url = req.url + ".gz";
+  res.set("Content-Encoding", "gzip");
   next();
 });
 //Server listening
