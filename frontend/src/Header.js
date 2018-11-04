@@ -45,7 +45,7 @@ const UserDropdown = ({ type, name }) => (
           <DropdownItem divider />
           <DropdownItem>
             <img src="/images/dashboard.svg" />
-            <Link to="/od/properties">Owner Dashboard</Link>
+            <Link to="/OwnerDashboard/properties">Owner Dashboard</Link>
           </DropdownItem>
           <DropdownItem divider />
         </Fragment>
@@ -118,7 +118,7 @@ class Header extends Component {
             </Link>
           )}
           {hideLyp || (
-            <Link to="/od/add-new" className="lyp">
+            <Link to="/OwnerDashboard/add-new" className="lyp">
               <button type="button">List your Property</button>
             </Link>
           )}

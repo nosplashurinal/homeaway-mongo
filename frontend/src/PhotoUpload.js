@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-class FileUpload extends Component {
+class PhotoUpload extends Component {
   constructor() {
     super();
     this.state = {
@@ -9,21 +9,17 @@ class FileUpload extends Component {
     };
   }
 
-  submitFile = event => {
-    event.preventDefault();
+  submitFile = () => {
     const formData = new FormData();
     formData.append("file", this.state.file[0]);
     axios
-      .post("http://localhost:3001/test-upload", formData, {
+      .post("http://localhost:3001/PhotoUpload", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
       })
       .then(response => {
-        console.log(
-          "Image has been saved to bucket. URL = ",
-          response.data.Location
-        );
+        this.props.onSubmit(response.data.Location);
       })
       .catch(error => {
         console.log(error);
@@ -33,19 +29,22 @@ class FileUpload extends Component {
   handleFileUpload = event => {
     this.setState({ file: event.target.files });
   };
-
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.file === null && this.state.file !== null ) {
+      this.submitFile();
+    }
+  }
   render() {
     return (
-      <form onSubmit={this.submitFile}>
+      <form>
         <input
           label="upload file"
           type="file"
           onChange={this.handleFileUpload}
         />
-        <button type="submit">Send</button>
       </form>
     );
   }
 }
 
-export default FileUpload;
+export default PhotoUpload;

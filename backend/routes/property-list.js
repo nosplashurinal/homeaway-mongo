@@ -64,4 +64,22 @@ router.get(
   }
 );
 
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let bedrooms;
+    PropModel.find({ bedrooms: { $eq: bedrooms } })
+      .then(properties => {
+        console.log("Properties :", properties);
+        res.status(200).send(properties);
+      })
+
+      .catch(error => {
+        console.log("Error :", error);
+        res.status(400).send(error);
+      });
+  }
+);
+
 module.exports = router;

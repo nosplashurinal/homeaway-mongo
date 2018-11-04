@@ -17,6 +17,7 @@ class MyProperties extends Component {
     this.props.onLoad();
   }
   render() {
+    const { properties } = this.props;
     return (
       <div className="properties">
         {properties.length === 0 ? (
@@ -29,7 +30,7 @@ class MyProperties extends Component {
         ) : (
           <div className="property-list">
             {properties.map((item, key) => {
-              const image = images[item.owner];
+              const image = item.photos[0];
               return (
                 <Card key={key}>
                   {image ? (

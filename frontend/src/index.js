@@ -7,7 +7,6 @@ import configureStore from "./store/configureStore";
 import "bootstrap/dist/css/bootstrap.css";
 import "react-redux-toastr/lib/css/react-redux-toastr.min.css";
 import { Provider } from "react-redux";
-import FileUpload from "./simplecomp";
 const store = configureStore();
 
 ReactDOM.render(

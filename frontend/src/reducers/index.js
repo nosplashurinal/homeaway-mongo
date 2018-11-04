@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { reducer as toastrReducer } from "react-redux-toastr";
 import * as types from "actions/types";
 import _ from "lodash";
+import { BOOKING_SUCCESS } from "../actions/types";
 
 const loginInit = {
   account: { email: "", password: "" },
@@ -101,18 +102,31 @@ export const messages = (state = { messages: [] }, action) => {
 export const register = (state = { isRegistered: false }, action) => {
   switch (action.type) {
     case types.REGISTER_SUCCESS:
-      return { ...state, isRegistered: true };
+      return { ...state, isRegistered: true, message: action.data.message };
     case types.REGISTER_FAILURE:
-      return { ...state, isRegistered: false };
+      return { ...state, isRegistered: false, message: action.data };
     default:
       return state;
   }
 };
 
-export const home = (state = {}, action) => {
+const homeInit = {
+  search: {
+    startDate: null,
+    endDate: null,
+    guests: {
+      adults: 1,
+      children: 0,
+      pets: false
+    },
+    location: undefined
+  }
+};
+
+export const home = (state = homeInit, action) => {
   switch (action.type) {
     case types.SAVE_SEARCH:
-      return { ...action.query };
+      return { ...state, search: { ...action.data } };
     default:
       return state;
   }
@@ -131,13 +145,16 @@ export const listing = (
 };
 
 const ownerdashboardInit = {
-  addPropertyStatus: undefined
+  addPropertyStatus: undefined,
+  properties: []
 };
 
 export const ownerdashboard = (state = ownerdashboardInit, action) => {
   switch (action.type) {
     case types.ADD_PROPERTY_STATUS:
       return { ...state, addPropertyStatus: action.status };
+    case types.SAVE_PROPERTIES:
+      return { ...state, properties: action.data.properties };
     default:
       return state;
   }
@@ -146,7 +163,11 @@ export const ownerdashboard = (state = ownerdashboardInit, action) => {
 export const property = (state = {}, action) => {
   switch (action.type) {
     case types.SAVE_PROPERTY_DETAILS:
-      return { ...state, ...action.data.details.Property };
+      return { ...state, details: action.data.details.Property };
+    case types.BOOKING_SUCCESS:
+      return { ...state, bookingInfo: action.data.result };
+    case types.BOOKING_FAILURE:
+      return state;
     default:
       return state;
   }

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-<<<<<<< HEAD
 import Dropzone from "react-dropzone";
 import axios from "axios";
 
@@ -12,7 +11,6 @@ class Photos extends Component {
       console.log("Result is", result);
     });
   };
-=======
 import PhotoUpload from "./PhotoUpload";
 import axios from "axios";
 
@@ -26,17 +24,12 @@ class Photos extends Component {
   componentWillUnmount() {
     this.props.onChange(this.state.photos);
   }
->>>>>>> 04bbdbe7cc85a8328771eabb4d3e9bebedde2c0b
   render() {
     console.log(this.state.photos);
     return (
       <div className="layout">
         <div className="panel panel-default">
-<<<<<<< HEAD
-          {/* {this.props.nextButton()} */}
-=======
           {this.props.nextButton()}
->>>>>>> 04bbdbe7cc85a8328771eabb4d3e9bebedde2c0b
           <h2>Add up to 50 photos of your property</h2>
           <hr />
           <div>
