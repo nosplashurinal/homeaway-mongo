@@ -124,6 +124,32 @@ export const registerUser = data => {
   };
 };
 
+export const fetchProperties = () => {
+  return dispatch => {
+    return axios.get(`http://localhost:3001/TravelerDash`).then(
+      res => {
+        dispatch(saveOwnerProperties({ properties: res.data }));
+      },
+      err => {
+        console.log("Failed to fetch your properties!");
+      }
+    );
+  };
+};
+
+export const fetchOwnerProperties = () => {
+  return dispatch => {
+    return axios.get(`http://localhost:3001/OwnerDash`).then(
+      res => {
+        dispatch(saveOwnerProperties({ properties: res.data }));
+      },
+      err => {
+        console.log("Failed to fetch your properties!");
+      }
+    );
+  };
+};
+
 export const saveSearch = data => {
   return {
     type: types.SAVE_SEARCH,
@@ -133,32 +159,16 @@ export const saveSearch = data => {
 
 export const fetchSearchResults = params => {
   return dispatch => {
+<<<<<<< Updated upstream
+    return axios.get(`http://localhost:3001/OwnerDash/MyProps`).then(
+=======
     return axios.get("http://localhost:3001/PropertyList", { params }).then(
+>>>>>>> Stashed changes
       res => {
         dispatch(saveSearchResults({ properties: res.data }));
       },
       err => {
         console.log("Failed to fetch Search Results!");
-      }
-    );
-  };
-};
-
-const saveOwnerProperties = data => {
-  return {
-    type: types.SAVE_PROPERTIES,
-    data
-  };
-};
-
-export const fetchProperties = () => {
-  return dispatch => {
-    return axios.get(`http://localhost:3001/OwnerDash/MyProps`).then(
-      res => {
-        dispatch(saveOwnerProperties({ properties: res.data }));
-      },
-      err => {
-        console.log("Failed to fetch your properties!");
       }
     );
   };
@@ -174,6 +184,13 @@ export const fetchPropertyDetails = (id, params) => {
         console.log("Failed to fetch Search Results!");
       }
     );
+  };
+};
+
+const saveOwnerProperties = data => {
+  return {
+    type: types.SAVE_PROPERTIES,
+    data
   };
 };
 

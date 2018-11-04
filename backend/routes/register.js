@@ -3,7 +3,7 @@ const router = express.Router();
 
 const kafka = require("../kafka/client");
 
-router.post("/Register", (req, res) => {
+router.post("/", (req, res) => {
   kafka.make_request("create_user", req.body, function(err, results) {
     console.log("Inside Register Request");
 

@@ -13,9 +13,14 @@ class Photos extends Component {
   }
   render() {
     return (
+<<<<<<< Updated upstream
       <div className="photo-upload">
         <div>
           {this.props.nextButton()}
+=======
+      <div className="layout">
+        <div className="panel panel-default">
+>>>>>>> Stashed changes
           <h2>Add up to 50 photos of your property</h2>
           <hr />
           <div class="upload-container">

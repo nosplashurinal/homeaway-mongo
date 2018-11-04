@@ -45,6 +45,7 @@ function handle_request(msg, callback) {
   PropModel.findById(propertyId)
 
     .then(property => {
+      console.log("Property details :", property, flag);
       callback(null, { property: property, available: flag });
     })
     .catch(error => {

@@ -24,4 +24,22 @@ router.get(
   }
 );
 
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    console.log("Traveler id :", req.user.userid);
+    let payload = req.body;
+    kafka.make_request("travel_dash", payload, function(err, result) {
+      if (err) {
+        console.log("Error adding details for user :", err);
+        res.status(404).send(err);
+      } else {
+        console.log("Details added", result);
+        res.status(200).send(result);
+      }
+    });
+  }
+);
+
 module.exports = router;
