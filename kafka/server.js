@@ -5,10 +5,13 @@ var NewUser = require("./services/register-user.js");
 var PropList = require("./services/prop-list.js");
 var PropDetails = require("./services/prop-details.js");
 var AddProp = require("./services/add_prop.js");
-var TDash = require("./services/traveler-dash");
-var ODashBooked = require("./services/owner-dash-booked");
-var ODashProps = require("./services/owner-dash-myprops");
+var TDash = require("./services/traveler-dash.js");
+var TDashUpdate = require("./services/traveler-dash-update.js");
+var ODashBooked = require("./services/owner-dash-booked.js");
+var ODashProps = require("./services/owner-dash-myprops.js");
+var ODashUpdate = require("./services/owner-dash-update.js");
 var BookProp = require("./services/book-prop.js");
+
 function handleTopicRequest(topic_name, fname) {
   //var topic_name = 'root_topic';
   var consumer = connection.getConsumer(topic_name);
@@ -46,6 +49,8 @@ handleTopicRequest("property_list", PropList);
 handleTopicRequest("property_details", PropDetails);
 handleTopicRequest("add_property", AddProp);
 handleTopicRequest("travel_dash", TDash);
+handleTopicRequest("travel_dash_update", TDashUpdate);
 handleTopicRequest("owner_dash_booked", ODashBooked);
 handleTopicRequest("owner_dash_myprops", ODashProps);
+handleTopicRequest("owner_dash_update", ODashUpdate);
 handleTopicRequest("book_prop", BookProp);

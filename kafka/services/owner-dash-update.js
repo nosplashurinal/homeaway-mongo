@@ -7,7 +7,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 let UserModel = require("../models/user");
 
 function handle_request(msg, callback) {
-  console.log("Traveller :", msg.userid);
+  console.log("Owner :", msg.userid);
   let {
     email,
     lastname,
@@ -22,27 +22,30 @@ function handle_request(msg, callback) {
     languages,
     gender
   } = msg;
-
-  let User = new UserModel({
-    email: email,
-    firstname: firstname,
-    lastname: lastname,
-    phonenumber: phonenumber,
-    aboutme: aboutme,
-    city: city,
-    country: country,
-    company: company,
-    school: school,
-    hometown: hometown,
-    languages: languages,
-    gender: gender
-  });
-  User.save()
+  UserModel.update(
+    { userid: msg.userid },
+    {
+      $set: {
+        email: email,
+        firstname: firstname,
+        lastname: lastname,
+        phonenumber: phonenumber,
+        aboutme: aboutme,
+        city: city,
+        country: country,
+        company: company,
+        school: school,
+        hometown: hometown,
+        languages: languages,
+        gender: gender
+      }
+    }
+  )
     .catch(err => {
       callback(null, err);
     })
     .then(user => {
-      console.log("Traveler ", user.firstname, "has been updated!");
+      console.log("Owner has been updated!");
       callback(null, user);
     });
 }

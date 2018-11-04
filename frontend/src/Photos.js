@@ -13,14 +13,9 @@ class Photos extends Component {
   }
   render() {
     return (
-<<<<<<< Updated upstream
       <div className="photo-upload">
         <div>
           {this.props.nextButton()}
-=======
-      <div className="layout">
-        <div className="panel panel-default">
->>>>>>> Stashed changes
           <h2>Add up to 50 photos of your property</h2>
           <hr />
           <div class="upload-container">
@@ -38,9 +33,11 @@ class Photos extends Component {
                 this.setState({ photos });
               }}
             />
-            <p>Showcase your property’s best features (no pets or people, please).
-            Requirements: JPEG, at least 1920 x 1080 pixels, less than 20MB file
-            size, 6 photos minimum.</p>
+            <p>
+              Showcase your property’s best features (no pets or people,
+              please). Requirements: JPEG, at least 1920 x 1080 pixels, less
+              than 20MB file size, 6 photos minimum.
+            </p>
           </div>
         </div>
       </div>

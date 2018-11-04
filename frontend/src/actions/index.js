@@ -159,11 +159,7 @@ export const saveSearch = data => {
 
 export const fetchSearchResults = params => {
   return dispatch => {
-<<<<<<< Updated upstream
     return axios.get(`http://localhost:3001/OwnerDash/MyProps`).then(
-=======
-    return axios.get("http://localhost:3001/PropertyList", { params }).then(
->>>>>>> Stashed changes
       res => {
         dispatch(saveSearchResults({ properties: res.data }));
       },
@@ -235,24 +231,26 @@ const messageSent = data => {
   return {
     type: types.MESSAGE_SENT,
     data
-  }
+  };
 };
 
 const messageFailed = () => {
   return {
     type: types.MESSAGE_FAILED
-  }
-}
+  };
+};
 
 export const messageOwner = data => {
   console.log("Data", data);
   return dispatch => {
-    return axios.post("http://localhost:3001/AddMessage", data).then(response => {
-      if (response.status === 200) {
-        dispatch(messageSent(response.data));
-      } else {
-        dispatch(messageFailed());
-      }
-    })
-  }
-}
+    return axios
+      .post("http://localhost:3001/AddMessage", data)
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(messageSent(response.data));
+        } else {
+          dispatch(messageFailed());
+        }
+      });
+  };
+};
