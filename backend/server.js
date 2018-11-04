@@ -111,8 +111,13 @@ const uploadFile = (buffer, name, type) => {
 // });
 
 //Other Express Routes
+<<<<<<< HEAD
 app.post("/AddPhoto", (req, res) => {
   console.log("Request body : ", req.body);
+=======
+app.post("/PhotoUpload", (req, res) => {
+  console.log("Inside Photo Upload");
+>>>>>>> 04bbdbe7cc85a8328771eabb4d3e9bebedde2c0b
   const form = new multiparty.Form();
   form.parse(req, async (error, fields, files) => {
     if (error) throw new Error(error);
