@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addProperty, fetchProperties } from "actions";
+import { addProperty, fetchProperties, fetchMessages } from "actions";
 import Header from "./Header";
 import Inbox from "./Inbox";
 import AddProperty from "./AddProperty";
@@ -59,7 +59,7 @@ const Profile = ({ activeItem, onFocus, userInfo }) => (
             name="firstname"
             id="firstname"
             placeholder="First Name"
-            value={userInfo.firstname || ''}
+            value={userInfo.firstname || ""}
           />
         </FormGroup>
         <FormGroup
@@ -71,7 +71,7 @@ const Profile = ({ activeItem, onFocus, userInfo }) => (
             name="lastname"
             id="lastname"
             placeholder="Last Name"
-            value={userInfo.lastname || ''}
+            value={userInfo.lastname || ""}
           />
         </FormGroup>
         <FormGroup className={`${activeItem === "about-me" ? " active" : ""}`}>
@@ -190,20 +190,21 @@ class OwnerDashboard extends Component {
     }
   }
   static getDerivedStateFromProps(props, state) {
-    if(props.addPropertyStatus == 200) {
+    if (props.addPropertyStatus == 200) {
       return {
         ...state,
-        activeNav: 'properties'
-      }
+        activeNav: "properties"
+      };
     } else return null;
   }
   setActiveNav = item => this.setState({ activeNav: item.value });
   render() {
     if (!this.props.userInfo) {
-      toastr.warning("Hold On!", "You're not signed in.")
+      toastr.warning("Hold On!", "You're not signed in.");
       return <Redirect to="/OwnerLogin" />;
     }
     const { activeFormGroup, activeNav } = this.state;
+    console.log(this.props.messages);
     return (
       <div className="od">
         <Header
@@ -253,7 +254,18 @@ class OwnerDashboard extends Component {
                 />
               )}
             />
-            <Route path="/OwnerDashboard/inbox" render={() => <Inbox />} />
+            <Route
+              path="/OwnerDashboard/inbox"
+              render={() => (
+                <Inbox
+                  allMessages={this.props.messages}
+                  iam={this.props.userInfo._id}
+                  onLoad={() =>
+                    this.props.fetchMessages(this.props.userInfo._id)
+                  }
+                />
+              )}
+            />
           </Switch>
         </div>
       </div>
@@ -264,13 +276,14 @@ class OwnerDashboard extends Component {
 const mapStateToProps = state => ({
   addPropertyStatus: state.ownerdashboard.addPropertyStatus,
   properties: state.ownerdashboard.properties,
+  messages: state.ownerdashboard.messages,
   userInfo: state.login.userInfo
 });
 
 const mapDispatchToProps = dispatch => ({
   onAddProperty: data => dispatch(addProperty(data)),
   fetchMyProperties: id => dispatch(fetchProperties(id)),
-  fetchMessages: id => dispatch(fetchMessages(id)),
+  fetchMessages: id => dispatch(fetchMessages(id))
 });
 
 export default connect(

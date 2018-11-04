@@ -146,7 +146,8 @@ export const listing = (
 
 const ownerdashboardInit = {
   addPropertyStatus: undefined,
-  properties: []
+  properties: [],
+  messages: []
 };
 
 export const ownerdashboard = (state = ownerdashboardInit, action) => {
@@ -155,6 +156,10 @@ export const ownerdashboard = (state = ownerdashboardInit, action) => {
       return { ...state, addPropertyStatus: action.status };
     case types.SAVE_PROPERTIES:
       return { ...state, properties: action.data.properties };
+    case types.MESSAGES_RECEIVED:
+      return { ...state, messages: action.data.messages };
+    case types.MESSAGES_NOT_RECEIVED:
+      return state;
     default:
       return state;
   }
@@ -169,9 +174,12 @@ export const property = (state = {}, action) => {
     case types.BOOKING_FAILURE:
       return state;
     case types.MESSAGE_SENT:
-      return {...state, messageStatus: "Your message has been sent."};
+      return { ...state, messageStatus: "Your message has been sent." };
     case types.MESSAGE_FAILED:
-      return {...state, messageStatus: "Sorry, we couldn't send this message."};
+      return {
+        ...state,
+        messageStatus: "Sorry, we couldn't send this message."
+      };
     default:
       return state;
   }

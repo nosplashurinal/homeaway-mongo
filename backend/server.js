@@ -146,6 +146,7 @@ app.use("/Booking", require("./routes/booking"));
 app.use("/Photo", require("./routes/photo"));
 app.use("/Home", require("./routes/home"));
 app.use("/AddMessage", require("./routes/messages"));
+app.use("/FetchMessages", require("./routes/messages"));
 app.get("*.js", function(req, res, next) {
   req.url = req.url + ".gz";
   res.set("Content-Encoding", "gzip");
