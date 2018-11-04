@@ -59,6 +59,7 @@ const Profile = ({ activeItem, onFocus, userInfo }) => (
             name="firstname"
             id="firstname"
             placeholder="First Name"
+            value={userInfo.firstname || ''}
           />
         </FormGroup>
         <FormGroup
@@ -70,6 +71,7 @@ const Profile = ({ activeItem, onFocus, userInfo }) => (
             name="lastname"
             id="lastname"
             placeholder="Last Name"
+            value={userInfo.lastname || ''}
           />
         </FormGroup>
         <FormGroup className={`${activeItem === "about-me" ? " active" : ""}`}>

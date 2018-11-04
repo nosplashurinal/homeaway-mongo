@@ -58,7 +58,7 @@ class Property extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { bookingInfo } = this.props;
     if (prevProps.details !== this.props.details) {
-      this.props.checkAvailability()
+      // this.props.checkAvailability()
     }
     if (!prevProps.bookingInfo && bookingInfo) {
       const startdate = moment(bookingInfo.startdate).format(

@@ -13,7 +13,7 @@ class Details extends React.Component {
     };
   }
   componentWillUnmount() {
-    this.props.onChange({ details: { ...this.state } });
+    this.props.onChange({ ...this.state });
   }
   render() {
     const {

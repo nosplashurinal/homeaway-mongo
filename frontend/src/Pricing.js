@@ -4,15 +4,11 @@ class Pricing extends React.Component {
   constructor(props) {
     super(props);
     this.price = createRef();
-    this.state = {
-      price: 0
-    };
   }
   componentWillUnmount() {
-    this.props.onChange(this.state.price);
+    this.props.onChange(parseInt(this.price.current.value));
   }
   render() {
-    const { price } = this.state;
     return (
       <div className="pricing">
         {this.props.nextButton()}
@@ -21,21 +17,18 @@ class Pricing extends React.Component {
           <div className="form-group">
             <label>Price</label>
             <input
-              value={price}
               ref={this.price}
               id="price"
               type="number"
               className="form-control"
-              onChange={() =>
-                this.setState({ price: this.price.current.value })
-              }
+              onChange={() => this.props.onChange(parseInt(this.price.current.value))}
             />
           </div>
           <button
             type="button"
             className="main-btn submit"
             name="submit"
-            onClick={() => this.props.handleSubmit(price)}
+            onClick={() => this.props.handleSubmit()}
           >
             Submit
           </button>

@@ -49,7 +49,6 @@ class AddProperty extends Component {
             values={this.state.location}
             onChange={values =>
               this.setState({
-                ...this.state,
                 values: { ...this.state.values, ...values }
               })
             }
@@ -64,7 +63,6 @@ class AddProperty extends Component {
             values={this.state.details}
             onChange={values =>
               this.setState({
-                ...this.state,
                 values: { ...this.state.values, ...values }
               })
             }
@@ -78,7 +76,6 @@ class AddProperty extends Component {
           <Photos
             onChange={value =>
               this.setState({
-                ...this.state,
                 values: { ...this.state.values, photos: value }
               })
             }
@@ -93,7 +90,6 @@ class AddProperty extends Component {
             price={this.state.price}
             onChange={value =>
               this.setState({
-                ...this.state,
                 values: { ...this.state.values, price: value }
               })
             }
@@ -110,8 +106,6 @@ class AddProperty extends Component {
     }
   };
   handleSubmit = () => {
-    console.log("onhandlesubmit", this.state.values);
-    console.log("Photos is", this.state.values.photos);
     this.props.onAdd(this.state.values);
   };
   onClickNext = () => {

@@ -7,6 +7,7 @@ import {
   CardTitle,
   CardSubtitle
 } from "reactstrap";
+import { Button, Form, FormGroup, Input } from "reactstrap";
 
 class MyProperties extends Component {
   constructor(props) {
@@ -37,12 +38,11 @@ class MyProperties extends Component {
                     <CardImg
                       top
                       width="100%"
-                      src={image[key].value}
+                      src={image}
                       alt="Card image cap"
                     />
                   ) : (
                     <CardImg
-                      middle
                       width="60px"
                       src="/images/placeholder.svg"
                       alt="Placeholder"

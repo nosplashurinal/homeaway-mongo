@@ -2,18 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const PropSchema = Schema({
   _id: Schema.Types.ObjectId,
-  name: {
-    type: String,
-    lowercase: true
-  },
+  name: String,
+  description: String,
   owner: { type: Schema.Types.ObjectId, ref: "User" },
   owneremail: String,
   sleeps: Number,
   bathrooms: Number,
   bedrooms: Number,
   type: {
-    type: String,
-    lowercase: true
+    type: String
   },
   price: Number,
   location: {

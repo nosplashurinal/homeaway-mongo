@@ -14,46 +14,23 @@ let UserSchema = Schema({
   },
   password: String,
   firstname: {
-    type: String,
-    lowercase: true
+    type: String
   },
   lastname: {
-    type: String,
-    lowercase: true
+    type: String
   },
   type: {
-    type: String,
-    lowercase: true
-  }
+    type: String
+  },
+  phonenumber: Number,
+  aboutme: String,
+  city: String,
+  country: String,
+  company: String,
+  school: String,
+  hometown: String,
+  languages: String,
+  gender: String
 });
-
-// UserSchema.pre("save", function(next) {
-//   var user = this;
-//   if (this.isModified("password") || this.isNew) {
-//     bcrypt.genSalt(10, function(err, salt) {
-//       if (err) {
-//         return next(err);
-//       }
-//       bcrypt.hash(user.password, salt, function(err, hash) {
-//         if (err) {
-//           return next(err);
-//         }
-//         user.password = hash;
-//         next();
-//       });
-//     });
-//   } else {
-//     return next();
-//   }
-// });
-
-// UserSchema.methods.comparePassword = function(pw, cb) {
-//   bcrypt.compare(pw, this.password, function(err, isMatch) {
-//     if (err) {
-//       return cb(err);
-//     }
-//     cb(null, isMatch);
-//   });
-// };
 
 module.exports = mongoose.model("User", UserSchema);

@@ -153,7 +153,7 @@ const saveOwnerProperties = data => {
 
 export const fetchProperties = () => {
   return dispatch => {
-    return axios.get(`http://localhost:3001/OwnerDash`).then(
+    return axios.get(`http://localhost:3001/OwnerDash/MyProps`).then(
       res => {
         dispatch(saveOwnerProperties({ properties: res.data }));
       },
@@ -178,6 +178,7 @@ export const fetchPropertyDetails = (id, params) => {
 };
 
 export const addProperty = data => {
+  console.log(data);
   return dispatch => {
     return axios
       .post("http://localhost:3001/AddProperty", data)

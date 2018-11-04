@@ -14,17 +14,23 @@ let UserSchema = Schema({
   },
   password: String,
   firstname: {
-    type: String,
-    lowercase: true
+    type: String
   },
   lastname: {
-    type: String,
-    lowercase: true
+    type: String
   },
   type: {
-    type: String,
-    lowercase: true
-  }
+    type: String
+  },
+  phonenumber: Number,
+  aboutme: String,
+  city: String,
+  country: String,
+  company: String,
+  school: String,
+  hometown: String,
+  languages: String,
+  gender: String
 });
 
 module.exports = mongoose.model("User", UserSchema);
