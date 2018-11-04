@@ -51,7 +51,8 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     console.log("GET messages");
-    let user = req.user.email;
+    let user = req.query.id;
+    console.log("User is", user);
     MsgModel.find({ $or: [{ from: user }, { to: user }] })
       .then(messages => {
         console.log("Messages for the user : ", messages);

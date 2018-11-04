@@ -63,19 +63,6 @@ export const handleLoginChange = data => {
     data
   };
 };
-
-export const submitMessage = message => {
-  return {
-    type: types.SUBMIT_MESSAGE,
-    message
-  };
-};
-export const fetchMessages = id => {
-  return {
-    type: types.FETCH_MESSAGES,
-    id
-  };
-};
 export const saveAddPropertyStatus = status => {
   return {
     type: types.ADD_PROPERTY_STATUS,
@@ -241,16 +228,38 @@ const messageFailed = () => {
 };
 
 export const messageOwner = data => {
-  console.log("Data", data);
   return dispatch => {
-    return axios
-      .post("http://localhost:3001/AddMessage", data)
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(messageSent(response.data));
-        } else {
-          dispatch(messageFailed());
-        }
-      });
-  };
+    return axios.post("http://localhost:3001/AddMessage", data).then(response => {
+      if (response.status === 200) {
+        dispatch(messageSent(response.data));
+      } else {
+        dispatch(messageFailed());
+      }
+    })
+  }
+}
+
+const messagesReceived = data => {
+  return {
+    type: types.MESSAGES_RECEIVED,
+    data
+  }
 };
+
+const messagesNotReceived = () => {
+  return {
+    type: types.MESSAGES_NOT_RECEIVED
+  }
+}
+
+export const fetchMessages = id => {
+  return dispatch => {
+    return axios.get(`http://localhost:3001/FetchMessages?id=${id}`).then(response => {
+      if (response.status === 200) {
+        dispatch(messagesReceived(response.data));
+      } else {
+        dispatch(messagesNotReceived());
+      }
+    })
+  }
+}

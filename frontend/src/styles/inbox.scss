@@ -11,8 +11,8 @@
   display: flex;
   #user_list_wrap {
     flex: 0 0 25%;
-    padding: 16px;
     height: 100%;
+    overflow: hidden;
   }
   #user_profile_wrap {
     flex: 1;
@@ -70,7 +70,7 @@
           width: 5px;
         }
         &:before {
-          content: '';
+          content: "";
           display: block;
           flex: none;
           width: 0;
@@ -91,6 +91,8 @@
           flex: 1;
           display: flex;
           flex-direction: column;
+          overflow: hidden;
+          text-overflow: ellipsis;
           #name {
             order: 1;
             padding-bottom: 8px;
@@ -101,8 +103,9 @@
           }
         }
         .arrow {
-          flex: 0 1 100%;
+          flex: 0 1 20px;
           height: 20px;
+          padding: 0 24px;
         }
       }
     }

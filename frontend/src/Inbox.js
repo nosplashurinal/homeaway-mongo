@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Messages from "containers/MessagesContainer";
+import Messages from "./Messages";
 import "styles/inbox.scss";
 
 const items = [
@@ -11,7 +11,21 @@ const items = [
 class Inbox extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      count: 0,
+      senders: []
+    };
+  }
+  componentDidMount() {
+    this.props.onLoad();
+  }
+  static getDerivedStateFromProps(props, state) {
+    if (props.allMessages.length !== state.count) {
+      let senders = props.allMessages.filter(item => item.to === props.iam);
+      return {
+        senders
+      };
+    } else return null;
   }
   inboxList = items => (
     <section id={"user_list"}>
@@ -25,7 +39,7 @@ class Inbox extends Component {
                   src="http://placehold.it/100x100"
                 />
                 <div className={"card_info"}>
-                  <div id={"name"}>{item.name}</div>
+                  <div id={"name"}>{item.sendername}</div>
                 </div>
                 <span className={`arrow`} />
               </div>
@@ -38,10 +52,8 @@ class Inbox extends Component {
   render() {
     return (
       <div className="inbox">
-        <div id="user_list_wrap">{this.inboxList(items)}</div>
-        <div id="user_profile_wrap">
-          <Messages orderId={1} />
-        </div>
+        <div id="user_list_wrap">{this.inboxList(this.state.senders)}</div>
+        <div id="user_profile_wrap">{/* <Messages orderId={1} /> */}</div>
       </div>
     );
   }
