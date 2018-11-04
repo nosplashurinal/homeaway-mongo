@@ -8,7 +8,6 @@ import { toastr } from "react-redux-toastr";
 import MyProperties from "./MyProperties";
 import { Link, Redirect, Route, Switch } from "react-router-dom";
 import { Button, Form, FormGroup, Input } from "reactstrap";
-import axios from "axios";
 import {
   Dropdown,
   DropdownToggle,
@@ -268,7 +267,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onAddProperty: data => dispatch(addProperty(data)),
-  fetchMyProperties: id => dispatch(fetchProperties(id))
+  fetchMyProperties: id => dispatch(fetchProperties(id)),
+  fetchMessages: id => dispatch(fetchMessages(id)),
 });
 
 export default connect(

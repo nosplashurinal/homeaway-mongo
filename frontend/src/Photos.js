@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PhotoUpload from "./PhotoUpload";
-import axios from "axios";
 
 class Photos extends Component {
   constructor(props) {
@@ -13,14 +12,13 @@ class Photos extends Component {
     this.props.onChange(this.state.photos);
   }
   render() {
-    console.log(this.state.photos);
     return (
-      <div className="layout">
-        <div className="panel panel-default">
+      <div className="photo-upload">
+        <div>
           {this.props.nextButton()}
           <h2>Add up to 50 photos of your property</h2>
           <hr />
-          <div>
+          <div class="upload-container">
             <PhotoUpload
               onSubmit={value => {
                 let photos = this.state.photos;
@@ -35,9 +33,9 @@ class Photos extends Component {
                 this.setState({ photos });
               }}
             />
-            Showcase your property’s best features (no pets or people, please).
+            <p>Showcase your property’s best features (no pets or people, please).
             Requirements: JPEG, at least 1920 x 1080 pixels, less than 20MB file
-            size, 6 photos minimum.
+            size, 6 photos minimum.</p>
           </div>
         </div>
       </div>

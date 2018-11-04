@@ -168,6 +168,10 @@ export const property = (state = {}, action) => {
       return { ...state, bookingInfo: action.data.result };
     case types.BOOKING_FAILURE:
       return state;
+    case types.MESSAGE_SENT:
+      return {...state, messageStatus: "Your message has been sent."};
+    case types.MESSAGE_FAILED:
+      return {...state, messageStatus: "Sorry, we couldn't send this message."};
     default:
       return state;
   }

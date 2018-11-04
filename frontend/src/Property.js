@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import ImageGallery from "templates/ImageGallery";
-import { fetchPropertyDetails, book } from "actions";
+import { fetchPropertyDetails, book, messageOwner } from "actions";
 import axios from "axios";
 import PropertyDetails from "./PropertyDetails";
 import { connect } from "react-redux";
 import Header from "./Header";
 import Search from "./Search";
-import { images } from "./images";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
@@ -48,18 +47,28 @@ class Property extends Component {
     } else {
       const data = {
         propertyid: this.props.details._id,
-        startdate: moment(this.props.searchQuery.startDate).format("YYYY-MM-DD"),
+        startdate: moment(this.props.searchQuery.startDate).format(
+          "YYYY-MM-DD"
+        ),
         enddate: moment(this.props.searchQuery.endDate).format("YYYY-MM-DD")
       };
       this.props.onBook(data);
     }
   };
   componentDidUpdate(prevProps, prevState) {
-    const {bookingInfo} = this.props;
-    if(!prevProps.bookingInfo && bookingInfo) {
-      const startdate = moment(bookingInfo.startdate).format("dddd, MMMM Do YYYY");
+    const { bookingInfo } = this.props;
+    if (prevProps.details !== this.props.details) {
+      this.props.checkAvailability()
+    }
+    if (!prevProps.bookingInfo && bookingInfo) {
+      const startdate = moment(bookingInfo.startdate).format(
+        "dddd, MMMM Do YYYY"
+      );
       const enddate = moment(bookingInfo.enddate).format("dddd, MMMM Do YYYY");
-      toastr.success("Success!", `Your reservation between ${startdate} and ${enddate} has been made. Hope you enjoy your stay!`)
+      toastr.success(
+        "Success!",
+        `Your reservation between ${startdate} and ${enddate} has been made. Hope you enjoy your stay!`
+      );
       this.props.history.push("/Traveler/trips");
     }
   }
@@ -96,7 +105,16 @@ class Property extends Component {
           {details === null ? (
             <div className="loading">Loading...</div>
           ) : (
-            <PropertyDetails item={details} onClickBook={() => this.onBook()} />
+            <PropertyDetails
+              item={details}
+              messageStatus={this.props.messageStatus}
+              searchQuery={this.props.searchQuery}
+              onChangeSearch={i => this.onChangeSearch(i)}
+              onMessage={data =>
+                this.props.messageOwner({ ...data, from: userInfo._id, to: details.owner })
+              }
+              onClickBook={() => this.onBook()}
+            />
           )}
         </div>
         {isFullScreen && (
@@ -133,12 +151,14 @@ const mapStateToProps = state => ({
   userInfo: state.login.userInfo,
   searchQuery: state.home.search,
   details: { ...state.property.details } || null,
-  bookingInfo: state.property.bookingInfo || null
+  bookingInfo: state.property.bookingInfo || null,
+  messageStatus: state.property.messageStatus || null
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchPropertyDetails: id => dispatch(fetchPropertyDetails(id)),
-  onBook: data => dispatch(book(data))
+  onBook: data => dispatch(book(data)),
+  messageOwner: data => dispatch(messageOwner(data))
 });
 
 export default connect(

@@ -145,6 +145,12 @@ app.use("/OwnerDash", require("./routes/owner-dashboard"));
 app.use("/Booking", require("./routes/booking"));
 app.use("/Photo", require("./routes/photo"));
 app.use("/Home", require("./routes/home"));
+app.use("/AddMessage", require("./routes/messages"));
+app.get('*.js', function (req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  next();
+});
 //Server listening
 app.listen(3001, () => {
   console.log("Server Listening on port 3001");

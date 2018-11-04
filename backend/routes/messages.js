@@ -17,8 +17,8 @@ router.post(
   (req, res) => {
     console.log("Inside Add new message");
 
-    let From = req.user.email;
-    let To = req.body.owneremail;
+    let From = req.body.from;
+    let To = req.body.to;
     let Body = req.body.msgbody;
     let Timestamp = new Date();
 
@@ -29,6 +29,8 @@ router.post(
       body: Body,
       timestamp: Timestamp
     });
+
+    console.log("Message", Message);
 
     Message.save()
       .then(message => {
@@ -59,3 +61,5 @@ router.get(
       });
   }
 );
+
+module.exports = router;

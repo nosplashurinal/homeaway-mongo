@@ -183,4 +183,53 @@
       width: 100%;
     }
   }
+  .photo-upload {
+    display: flex;
+    .upload-container {
+      display: flex;
+      flex-wrap: wrap;
+      .photo-form {
+        width: 160px;
+        height: 160px;
+        border: 3px solid #5e6d77;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 32px 32px 0;
+        position: relative;
+        background-repeat: no-repeat;
+        background-size: cover;
+        input {
+          opacity: 0;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+        }
+        &:after {
+          content: "+";
+          color: #5e6d77;
+          font-size: 92px;
+          pointer-events: none;
+        }
+        &:hover {
+          background-color: rgba($blue, 0.1);
+        }
+        &.active {
+          border: 0;
+          &:after {
+            content: "";
+            background-color: rgba(#ccc, 0.3);
+          }
+          &:hover {
+            background-color: transparent;
+          }
+        }
+      }
+    }
+    p {
+      flex: 0 0 100%;
+    }
+  }
 }

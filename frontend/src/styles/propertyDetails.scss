@@ -1,11 +1,15 @@
 @import "constants.scss";
 
 .property-details {
-  padding: 20px;
+  padding: 16px 12px 16px 20px;
   font-family: $font;
   text-align: center;
+  flex: none;
+  width: 35%;
+  min-width: 410px;
   .pricing {
     text-align: left;
+    margin-bottom: 24px;
     h2 {
       display: inline-block;
     }
@@ -31,7 +35,17 @@
   button.request-book {
     width: 200px;
     height: 40px;
-    margin-top: 32px;
+    display: block;
+    margin: auto;
+    margin-top: 16px;
+  }
+  button.ask-question {
+    background: none;
+    margin-top: 16px;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 8px;
+    color: $blue;
   }
   .rating {
     margin-bottom: 40px;
@@ -57,12 +71,33 @@
       }
     }
   }
-  .available-message {
-    text-align: left;
-    line-height: 40px;
-    font-weight: 900;
-  }
   .user-selection {
+    position: relative;
+    .availability-message {
+      text-align: left;
+      font-weight: 500;
+      position: relative;
+      background-color:rgba(#f00, 0.75);
+      color: white;
+      padding: 8px;
+      border-radius: 4px;
+      margin: 4px 0 8px 0;
+      &:after {
+        display: block;
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid rgba(#f00, 0.75);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        transform: translate(0,100%);
+      }
+    }
     .DateRangePickerInput_arrow {
       width: 60px;
       display: flex;
@@ -81,7 +116,7 @@
             color: $blue;
           }
           &:after {
-            content: '';
+            content: "";
             display: block;
             position: absolute;
             top: 0;
@@ -106,6 +141,80 @@
       text-align: left;
       color: $blue;
       padding: 12px;
+    }
+  }
+  .fullscreen-modal {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.8);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .message-modal {
+      width: 60%;
+      height: auto;
+      padding: 20px 0;
+      background: white;
+      border-radius: 8px;
+      position: relative;
+      .close-modal {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 28px;
+        margin: 8px 8px 0 0;
+        background: rgba(#000, 0.7);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      h3 {
+        padding-bottom: 16px;
+        margin-bottom: 24px;
+        border-bottom: 1px solid $offwhite;
+        color: $black;
+        flex: 0 0 100%;
+      }
+      .form-group {
+        width: auto;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        width: 400px;
+        &.small {
+          height: 48px;
+        }
+        &.big {
+          width: 400px;
+          height: 100px;
+          border-radius: 4px;
+          textarea {
+            width: 100%;
+            border-radius: 4px;
+            border-color: $dark-gray;
+            color: $black;
+            padding: 8px;
+          }
+        }
+      }
+      .send-message {
+        width: 300px;
+        padding: 8px 0;
+        font-size: 18px;
+      }
     }
   }
 }

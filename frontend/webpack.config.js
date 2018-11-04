@@ -3,7 +3,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const devMode = process.env.NODE_ENV !== "production";
-var CompressionPlugin = require("compression-webpack-plugin");
+var CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: "./src/index.js",
@@ -43,12 +43,12 @@ module.exports = {
       template: "src/index.html"
     }),
     new MiniCssExtractPlugin(),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
-      }
-    }),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new CompressionPlugin()
+    // new webpack.DefinePlugin({ 
+    //   'process.env': {
+    //     'NODE_ENV': JSON.stringify('production')
+    //   }
+    // }),
+    // new webpack.optimize.AggressiveMergingPlugin(),
+    // new CompressionPlugin()
   ]
 };

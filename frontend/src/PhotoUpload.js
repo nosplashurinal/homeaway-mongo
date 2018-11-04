@@ -5,7 +5,9 @@ class PhotoUpload extends Component {
   constructor() {
     super();
     this.state = {
-      file: null
+      file: null,
+      isUploaded: false,
+      url: null
     };
   }
 
@@ -19,6 +21,7 @@ class PhotoUpload extends Component {
         }
       })
       .then(response => {
+        this.setState({ isUploaded: true, url: response.data.Location });
         this.props.onSubmit(response.data.Location);
       })
       .catch(error => {
@@ -30,13 +33,20 @@ class PhotoUpload extends Component {
     this.setState({ file: event.target.files });
   };
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.file === null && this.state.file !== null ) {
+    if (prevState.file === null && this.state.file !== null) {
       this.submitFile();
     }
   }
   render() {
     return (
-      <form>
+      <form
+        className={`photo-form${this.state.isUploaded ? ' active' : ''}`}
+        style={{
+          backgroundImage: this.state.isUploaded
+            ? `url(${this.state.url})`
+            : "none"
+        }}
+      >
         <input
           label="upload file"
           type="file"

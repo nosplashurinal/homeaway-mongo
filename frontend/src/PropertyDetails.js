@@ -1,57 +1,24 @@
 import React, { Component } from "react";
-import {
-  DateRangePicker,
-  SingleDatePicker,
-  DayPickerRangeController
-} from "react-dates";
+import { DateRangePicker } from "react-dates";
 import Counter from "templates/Counter";
 import RadioGroup from "templates/RadioGroup";
 import RatingDisplay from "templates/RatingDisplay";
 import Dropdown from "templates/Dropdown";
+import MessageModal from "templates/MessageModal";
+import moment from "moment";
 import "react-dates/lib/css/_datepicker.css";
 import "react-dates/initialize";
 import "styles/propertyDetails.scss";
-
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)"
-  }
-};
 
 class PropertyDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
       dropdownIsOpen: false,
-      modalIsOpen: false,
-      startDate: null,
-      endDate: null,
-      guests: {
-        adults: 1,
-        children: 0,
-        pets: false
-      }
+      openMessageModal: false,
+      modalIsOpen: false
     };
   }
-  updateAdultGuests = i => {
-    const guests = {
-      ...this.state.guests,
-      adults: i
-    };
-    this.setState({ guests });
-  };
-  updateChildrenGuests = i => {
-    const guests = {
-      ...this.state.guests,
-      children: i
-    };
-    this.setState({ guests });
-  };
   openModal = () => {
     this.setState({ modalIsOpen: true });
   };
@@ -61,13 +28,8 @@ class PropertyDetails extends Component {
   toggleDropdown = () =>
     this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
   render() {
-    const {
-      guests,
-      startDate,
-      endDate,
-      focusedInput,
-      dropdownIsOpen
-    } = this.state;
+    const { focusedInput, dropdownIsOpen } = this.state;
+    const { guests, startDate, endDate, location } = this.props.searchQuery;
     const { item } = this.props;
     return (
       <div className="property-details">
@@ -93,18 +55,36 @@ class PropertyDetails extends Component {
           </div>
         </div>
         {item.rating !== undefined && <RatingDisplay rating={item.rating} />}
-        <p className="available-message">Your dates are available!</p>
         <div className="user-selection">
+          {(!!startDate && !!endDate) ||
+            <p className="availability-message">
+              Enter dates for accurate pricing.
+            </p>
+          }
           <DateRangePicker
-            startDate={startDate} // momentPropTypes.momentObj or null,
+            startDate={startDate === null ? null : moment(startDate)} // momentPropTypes.momentObj or null,
             startDateId="check_in" // PropTypes.string.isRequired,
-            startDatePlaceholderText="Check In"
-            endDatePlaceholderText="Check Out"
-            endDate={endDate} // momentPropTypes.momentObj or null,
+            startDatePlaceholderText={
+              startDate === null
+                ? "Check In"
+                : moment(startDate).format("YYYY-MM-DD")
+            }
+            endDatePlaceholderText={
+              endDate === null ? "Check Out" : moment(endDate).format("YYYY-MM-DD")
+            }
+            endDate={endDate === null ? null : moment(endDate)} // momentPropTypes.momentObj or null,
             endDateId="check_out" // PropTypes.string.isRequired,
-            onDatesChange={({ startDate, endDate }) =>
-              this.setState({ startDate, endDate })
-            } // PropTypes.func.isRequired,
+            onDatesChange={({ startDate, endDate }) => {
+              const formattedStartDate =
+                startDate !== null ? startDate.format("YYYY-MM-DD") : null;
+              const formattedEndDate =
+                endDate !== null ? endDate.format("YYYY-MM-DD") : null;
+              this.props.onChangeSearch({
+                ...this.props.searchQuery,
+                startDate: formattedStartDate,
+                endDate: formattedEndDate
+              });
+            }} // PropTypes.func.isRequired,
             focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
             onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
           />
@@ -174,6 +154,21 @@ class PropertyDetails extends Component {
         >
           Book Now
         </button>
+        <button
+          className="ask-question"
+          onClick={() => this.setState({ openMessageModal: true })}
+        >
+          Ask the Owner a Question
+        </button>
+        {this.state.openMessageModal && (
+          <div className="fullscreen-modal">
+            <MessageModal
+              messageStatus={this.props.messageStatus}
+              onSend={this.props.onMessage}
+              onClose={() => this.setState({ openMessageModal: false })}
+            />
+          </div>
+        )}
       </div>
     );
   }
