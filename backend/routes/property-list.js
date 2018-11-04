@@ -6,6 +6,8 @@ const passport = require("passport");
 require("../config/passport")(passport);
 router.use(passport.initialize());
 
+const PropModel = require("../models/property");
+
 router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
@@ -21,6 +23,44 @@ router.get(
         res.status(200).json(result);
       }
     });
+  }
+);
+
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let min, max;
+    PropModel.find({
+      $and: [{ price: { $gte: min } }, { price: { $lte: max } }]
+    })
+      .then(properties => {
+        console.log("Properties :", properties);
+        res.status(200).send(properties);
+      })
+
+      .catch(error => {
+        console.log("Error :", error);
+        res.status(400).send(error);
+      });
+  }
+);
+
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let bedrooms;
+    PropModel.find({ bedrooms: { $eq: bedrooms } })
+      .then(properties => {
+        console.log("Properties :", properties);
+        res.status(200).send(properties);
+      })
+
+      .catch(error => {
+        console.log("Error :", error);
+        res.status(400).send(error);
+      });
   }
 );
 

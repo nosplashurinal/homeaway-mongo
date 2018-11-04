@@ -47,5 +47,5 @@ handleTopicRequest("property_details", PropDetails);
 handleTopicRequest("add_property", AddProp);
 handleTopicRequest("travel_dash", TDash);
 handleTopicRequest("owner_dash_booked", ODashBooked);
-handleTopicRequest("owner_dash_myprops", ODashBooked);
+handleTopicRequest("owner_dash_myprops", ODashProps);
 handleTopicRequest("book_prop", BookProp);

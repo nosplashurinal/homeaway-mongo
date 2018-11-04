@@ -11,12 +11,13 @@ import Register from "./Register";
 import TravelerDashboard from "./TravelerDashboard";
 import Logout from "./Logout";
 import Error from "./Error";
+import Photos from "./Photos";
 
 const App = () => {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Photos} />
         <Route path="/Home" component={Home} />
         <Route path="/TravelerLogin" component={Login} />
         <Route path="/OwnerLogin" component={Login} />

@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import Dropzone from 'react-dropzone';
+import Dropzone from "react-dropzone";
 import axios from "axios";
 
 class Photos extends Component {
   handleOnDrop = (files, rejectedFiles) => {
     let file = new FormData();
-    axios.post("http://localhost:3001/ImageUpload", file).then(result => {
-      console.log("Result is", result);
-    });
     file.append("selectedFile", files[0]);
     console.log(files);
+    axios.post("http://localhost:3001/AddPhoto", file).then(result => {
+      console.log("Result is", result);
+    });
   };
   render() {
     return (
       <div className="layout">
         <div className="panel panel-default">
-        {this.props.nextButton()}
+          {/* {this.props.nextButton()} */}
           <h2>Add up to 50 photos of your property</h2>
           <hr />
           <div>

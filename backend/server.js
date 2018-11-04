@@ -111,7 +111,8 @@ const uploadFile = (buffer, name, type) => {
 // });
 
 //Other Express Routes
-app.post("/test-upload", (req, res) => {
+app.post("/AddPhoto", (req, res) => {
+  console.log("Request body : ", req.body);
   const form = new multiparty.Form();
   form.parse(req, async (error, fields, files) => {
     if (error) throw new Error(error);
