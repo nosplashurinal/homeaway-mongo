@@ -1,16 +1,4 @@
 import React, { Component } from "react";
-import Dropzone from "react-dropzone";
-import axios from "axios";
-
-class Photos extends Component {
-  handleOnDrop = (files, rejectedFiles) => {
-    let file = new FormData();
-    file.append("selectedFile", files[0]);
-    console.log(files);
-    axios.post("http://localhost:3001/AddPhoto", file).then(result => {
-      console.log("Result is", result);
-    });
-  };
 import PhotoUpload from "./PhotoUpload";
 import axios from "axios";
 

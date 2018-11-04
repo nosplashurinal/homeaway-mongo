@@ -2,6 +2,11 @@
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
+app.get("*.js", function(req, res, next) {
+  req.url = req.url + ".gz";
+  res.set("Content-Encoding", "gzip");
+  next();
+});
 app.use(cookieParser());
 
 //Cors
