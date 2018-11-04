@@ -21,11 +21,13 @@ router.post(
     let To = req.body.to;
     let Body = req.body.msgbody;
     let Timestamp = new Date();
+    let sender = req.user.firstname;
 
     let Message = new MsgModel({
       _id: new mongoose.Types.ObjectId(),
       from: From,
       to: To,
+      sendername: sender,
       body: Body,
       timestamp: Timestamp
     });

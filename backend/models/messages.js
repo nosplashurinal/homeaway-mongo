@@ -6,6 +6,7 @@ let MessageSchema = Schema({
   body: String,
   from: Schema.Types.ObjectId,
   to: Schema.Types.ObjectId,
+  sendername: String,
   timestamp: Date
 });
 module.exports = mongoose.model("Message", MessageSchema);
