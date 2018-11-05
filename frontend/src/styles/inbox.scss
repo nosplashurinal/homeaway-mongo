@@ -16,7 +16,7 @@
   }
   #user_profile_wrap {
     flex: 1;
-    padding: 16px 16px 16px 0;
+    padding: 0 1px;
     display: flex;
     display: -webkit-flex;
     flex-direction: column;
@@ -97,6 +97,7 @@
             order: 1;
             padding-bottom: 8px;
             white-space: nowrap;
+            font-size: 22px;
           }
           #email {
             order: 2;

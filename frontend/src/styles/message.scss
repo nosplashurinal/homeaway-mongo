@@ -51,7 +51,8 @@ div#message {
             align-items: baseline;
             justify-content: start;
             > span {
-                font-size: 10px;
+                font-size: 14px;
+                text-transform: capitalize;
             }
         }
         #body {
