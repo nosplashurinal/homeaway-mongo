@@ -22,9 +22,11 @@ router.post("/", (req, res, next) => {
 
       console.log("User Login Successful! Response from authenticate", user);
       /** This is what ends up in our JWT */
+      console.log("Firstname : ", user.firstname);
       const payload = {
         email: user.email,
         userid: user._id,
+        firstname: user.firstname,
         expires: Date.now() + parseInt(process.env.JWT_EXPIRATION_MS)
       };
 

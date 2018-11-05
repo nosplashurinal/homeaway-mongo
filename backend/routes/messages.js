@@ -16,7 +16,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     console.log("Inside Add new message");
-
+    console.log("Firstname : ", req.user.firstname);
     let From = req.body.from;
     let To = req.body.to;
     let Body = req.body.msgbody;

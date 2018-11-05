@@ -7,43 +7,57 @@ let UserModel = require("../models/user");
 const saltRounds = 10;
 function handle_request(msg, callback) {
   console.log("In handle request:" + JSON.stringify(msg));
+
   const { email, password, firstname, lastname, type } = msg;
-  console.log("Email :", msg.email);
-  bcrypt.hash(password, saltRounds, (err, hash) => {
-    console.log("Inside hash function", email);
-    if (err) callback(null, "Password hashing failed!");
-    else {
-      console.log("Inside else block", hash);
-      let User = new UserModel({
-        _id: new mongoose.Types.ObjectId(),
-        email: email,
-        password: hash,
-        firstname: firstname,
-        lastname: lastname,
-        type: type
-      });
+  UserModel.find({ email: email })
+    .then(result => {
+      if (!result) {
+        console.log("Email :", msg.email);
+        bcrypt.hash(password, saltRounds, (err, hash) => {
+          console.log("Inside hash function", email);
+          if (err) callback(null, "Password hashing failed!");
+          else {
+            console.log("Inside else block", hash);
+            let User = new UserModel({
+              _id: new mongoose.Types.ObjectId(),
+              email: email,
+              password: hash,
+              firstname: firstname,
+              lastname: lastname,
+              type: type
+            });
 
-      console.log("New User :", User);
+            console.log("New User :", User);
 
-      // mongoose.connect(
-      //   "mongodb://kailashr:passw0rd1@ds237855.mlab.com:37855/homeaway",
-      //   function(err) {
-      //     if (err) callback(null, err);
-      //     else callback(null, "Success!");
-      //   }
-      // );
+            // mongoose.connect(
+            //   "mongodb://kailashr:passw0rd1@ds237855.mlab.com:37855/homeaway",
+            //   function(err) {
+            //     if (err) callback(null, err);
+            //     else callback(null, "Success!");
+            //   }
+            // );
 
-      User.save()
-        .then(user => {
-          console.log("Inside Save!!");
-          callback(null, user);
-        })
+            User.save()
+              .then(user => {
+                console.log("Inside Save!!");
+                callback(null, user);
+              })
 
-        .catch(err => {
-          callback(null, new Error("Error creating user!" + err));
+              .catch(err => {
+                callback(null, new Error("Error creating user!" + err));
+              });
+          }
         });
-    }
-  });
+      } else {
+        console.log("Email already exists!");
+        callback(null, new Error("Email already exists!"));
+      }
+    })
+
+    .catch(error => {
+      console.log("Error finding email!");
+      callback(null, error);
+    });
 }
 
 exports.handle_request = handle_request;
