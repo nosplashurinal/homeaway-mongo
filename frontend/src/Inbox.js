@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Messages from "./Messages";
 import "styles/inbox.scss";
-import moment from 'moment';
-import uniqby from 'lodash.uniqby';
+import moment from "moment";
+import uniqby from "lodash.uniqby";
 
 const items = [
   {
@@ -26,7 +26,7 @@ class Inbox extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.allMessages.length !== state.count) {
       let senders = props.allMessages.filter(item => item.to === props.iam);
-      senders = uniqby(senders, 'from');
+      senders = uniqby(senders, "from");
       return {
         senders
       };
@@ -41,33 +41,46 @@ class Inbox extends Component {
       conversation.sort((left, right) =>
         moment.utc(left.timestamp).diff(moment.utc(right.timestamp))
       );
-      console.log(conversation);
       this.setState({ conversation });
     }
   }
   inboxList = items => (
     <section id={"user_list"}>
       <ul id={"list_container"}>
-        {items.map((item, key) => (
-          <li
-            className={"list_item"}
-            key={key}
-            onClick={() => this.setState({ activeItem: item.from })}
-          >
-            <a>
-              <div className={"user_card"}>
-                <img
-                  className={"card_picture"}
-                  src="http://placehold.it/100x100"
-                />
-                <div className={"card_info"}>
-                  <div id={"name"}>{item.sendername}</div>
-                </div>
-                <span className={`arrow`} />
+        {items.length === 0 ? (
+          <li className="list_item">
+            <div className={"user_card"}>
+              <img
+                className={"card_picture"}
+                src="/images/envelope.svg"
+              />
+              <div className={"card_info"}>
+                <div id={"name"}>You have no messages.</div>
               </div>
-            </a>
+            </div>
           </li>
-        ))}
+        ) : (
+          items.map((item, key) => (
+            <li
+              className={"list_item"}
+              key={key}
+              onClick={() => this.setState({ activeItem: item.from })}
+            >
+              <a>
+                <div className={"user_card"}>
+                  <img
+                    className={"card_picture"}
+                    src="http://placehold.it/100x100"
+                  />
+                  <div className={"card_info"}>
+                    <div id={"name"}>{item.sendername}</div>
+                  </div>
+                  <span className={`arrow`} />
+                </div>
+              </a>
+            </li>
+          ))
+        )}
       </ul>
     </section>
   );
@@ -78,7 +91,9 @@ class Inbox extends Component {
         <div id="user_profile_wrap">
           <Messages
             conversation={this.state.conversation}
-            submitMessage={data => this.props.onMessage({...data, to: this.state.activeItem})}
+            submitMessage={data =>
+              this.props.onMessage({ ...data, to: this.state.activeItem })
+            }
           />
         </div>
       </div>

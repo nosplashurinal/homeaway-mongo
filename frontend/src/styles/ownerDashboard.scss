@@ -88,6 +88,11 @@
         width: 250px;
         height: 340px;
         margin-right: 32px;
+        .no-image {
+          width: 48px;
+          margin: auto;
+          height: 202px;
+        }
         .card-title,
         .card-subtitle {
           overflow: hidden;
