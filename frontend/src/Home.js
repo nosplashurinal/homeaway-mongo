@@ -24,9 +24,8 @@ class Home extends Component {
   };
   onChangeSearch = query => this.props.saveSearch(query);
   render() {
-    const { location, startDate, endDate, guests } = this.props.search;
-    const guestTotal = guests.adults + guests.children;
-    const pets = guests.pets;
+    const { location, startDate, endDate, adults, children, pets } = this.props.search;
+    const guestTotal = adults + children;
     if (this.state.goToListing) {
       return (
         <Redirect

@@ -16,12 +16,11 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     console.log("Inside Add new message");
-
     let From = req.body.from;
     let To = req.body.to;
     let Body = req.body.msgbody;
     let Timestamp = new Date();
-    let sender = req.user.firstname;
+    let sender = req.body.name;
 
     let Message = new MsgModel({
       _id: new mongoose.Types.ObjectId(),

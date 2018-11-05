@@ -111,18 +111,26 @@ export const registerUser = data => {
   };
 };
 
-// export const fetchTravelerProperties = () => {
-//   return dispatch => {
-//     return axios.get(`http://localhost:3001/TravelerDash`).then(
-//       res => {
-//         dispatch(saveTravelerProperties({ properties: res.data }));
-//       },
-//       err => {
-//         console.log("Failed to fetch your properties!");
-//       }
-//     );
-//   };
-// };
+export const saveTrips = data => {
+  return {
+    type: types.SAVE_TRIPS,
+    data
+  };
+};
+
+
+export const fetchTrips = () => {
+  return dispatch => {
+    return axios.get(`http://localhost:3001/TravelerDash`).then(
+      res => {
+        dispatch(saveTrips({ properties: res.data }));
+      },
+      err => {
+        console.log("Failed to fetch your trips!");
+      }
+    );
+  };
+};
 
 export const fetchOwnerProperties = () => {
   return dispatch => {

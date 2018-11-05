@@ -114,11 +114,9 @@ const homeInit = {
   search: {
     startDate: null,
     endDate: null,
-    guests: {
-      adults: 1,
-      children: 0,
-      pets: false
-    },
+    adults: 1,
+    children: 0,
+    pets: false,
     location: undefined
   }
 };
@@ -175,7 +173,8 @@ export const ownerdashboard = (state = ownerdashboardInit, action) => {
 
 const travelerboardInit = {
   messages: [],
-  replyStatus: undefined
+  replyStatus: undefined,
+  trips: []
 };
 
 export const travelerdashboard = (state = travelerboardInit, action) => {
@@ -187,6 +186,8 @@ export const travelerdashboard = (state = travelerboardInit, action) => {
       return state;
     case types.TLR_REPLY_SENT:
       return { ...state, replyStatus: "Your message has been sent." };
+    case types.SAVE_TRIPS:
+      return { ...state, trips: action.data.properties };
     case types.TLR_REPLY_FAILED:
       return {
         ...state,

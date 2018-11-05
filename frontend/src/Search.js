@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {
   DateRangePicker,
   SingleDatePicker,
@@ -33,12 +33,21 @@ class Search extends Component {
       : this.props.onClick(this.props.searchQuery);
   };
   render() {
-    const { guests, startDate, endDate, location } = this.props.searchQuery;
+    const {
+      adults,
+      children,
+      pets,
+      startDate,
+      endDate,
+      location
+    } = this.props.searchQuery;
     const { showError, dropdownIsOpen, focusedInput } = this.state;
     return (
       <div className="search">
         <input
-          className={`location-search${showError && !location ? " error" : ""}`}
+          className={`location-search${showError && !location ? " error" : ""}${
+            this.props.showFilters ? " filtersActive" : ""
+          }`}
           placeholder={`${
             location !== undefined ? location : "Where do you want to go?"
           }`}
@@ -95,31 +104,44 @@ class Search extends Component {
             type="button"
             className="guest-selector"
             onClick={this.toggleDropdown}
-          >{`${guests.adults + guests.children} Guest${
-            guests.adults + guests.children > 1 ? "s" : ""
-          } ${guests.pets ? ", Pets" : ""}`}</button>
+          >{`${adults + children} Guest${adults + children > 1 ? "s" : ""} ${
+            pets ? ", Pets" : ""
+          }`}</button>
           <Dropdown
             isOpen={dropdownIsOpen}
             onClick={() => this.toggleDropdown()}
           >
             <p>Adults:</p>
-            <Counter min={1} onIncrement={i => this.updateAdultGuests(i)} />
+            <Counter
+              min={1}
+              onIncrement={i =>
+                this.props.onChange({
+                  ...this.props.searchQuery,
+                  adults: adults + i
+                })
+              }
+            />
             <p>Children:</p>
-            <Counter min={0} onIncrement={i => this.updateChildrenGuests(i)} />
+            <Counter
+              min={0}
+              onIncrement={i =>
+                this.props.onChange({
+                  ...this.props.searchQuery,
+                  children: children + i
+                })
+              }
+            />
             <p>Pets:</p>
             <RadioGroup
               options={[
                 { label: "Yes", value: "yes" },
                 { label: "No", value: "no" }
               ]}
-              checked={guests.pets ? "yes" : "no"}
+              checked={pets ? "yes" : "no"}
               onChange={i =>
                 this.props.onChange({
                   ...this.props.searchQuery,
-                  guests: {
-                    ...guests,
-                    pets: i === "yes" ? true : false
-                  }
+                  pets: i === "yes" ? true : false
                 })
               }
             />
@@ -134,6 +156,34 @@ class Search extends Component {
             </div>
           </Dropdown>
         </div>
+        {this.props.showFilters && (
+          <Fragment>
+            <div className="v-line" />
+            <input className="bedroom-filter" placeholder="Bedrooms" />
+            <div className="v-line" />
+            <div className="price-filter">
+              <input
+                placeholder="Min Price"
+                onChange={i =>
+                  this.props.onChange({
+                    ...this.props.searchQuery,
+                    minPrice: i.target.value
+                  })
+                }
+              />
+              <div className="v-line" />
+              <input
+                placeholder="Max Price"
+                onChange={i =>
+                  this.props.onChange({
+                    ...this.props.searchQuery,
+                    maxPrice: i.target.value
+                  })
+                }
+              />
+            </div>
+          </Fragment>
+        )}
         <div className="v-line" />
         <div className="submit">
           <button type="button" id="Popover2" onClick={this.onClickSearch}>
