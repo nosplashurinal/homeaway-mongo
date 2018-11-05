@@ -28,7 +28,8 @@ class Inbox extends Component {
       let senders = props.allMessages.filter(item => item.to === props.iam);
       senders = uniqby(senders, "from");
       return {
-        senders
+        senders,
+        count: props.allMessages.length
       };
     } else return null;
   }
@@ -36,7 +37,7 @@ class Inbox extends Component {
     if (prevState.activeItem !== this.state.activeItem) {
       let conversation = this.props.allMessages.filter(
         item =>
-          item.to === this.props.iam || item.from === this.state.activeItem
+          (item.to === this.props.iam || item.to === this.state.activeItem) && (item.from === this.props.iam || item.from === this.state.activeItem)
       );
       conversation.sort((left, right) =>
         moment.utc(left.timestamp).diff(moment.utc(right.timestamp))

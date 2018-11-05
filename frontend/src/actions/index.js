@@ -111,22 +111,22 @@ export const registerUser = data => {
   };
 };
 
-export const fetchProperties = () => {
-  return dispatch => {
-    return axios.get(`http://localhost:3001/TravelerDash`).then(
-      res => {
-        dispatch(saveOwnerProperties({ properties: res.data }));
-      },
-      err => {
-        console.log("Failed to fetch your properties!");
-      }
-    );
-  };
-};
+// export const fetchTravelerProperties = () => {
+//   return dispatch => {
+//     return axios.get(`http://localhost:3001/TravelerDash`).then(
+//       res => {
+//         dispatch(saveTravelerProperties({ properties: res.data }));
+//       },
+//       err => {
+//         console.log("Failed to fetch your properties!");
+//       }
+//     );
+//   };
+// };
 
 export const fetchOwnerProperties = () => {
   return dispatch => {
-    return axios.get(`http://localhost:3001/OwnerDash`).then(
+    return axios.get(`http://localhost:3001/OwnerDash/MyProps`).then(
       res => {
         dispatch(saveOwnerProperties({ properties: res.data }));
       },

@@ -16,9 +16,30 @@ class Photos extends Component {
       <div className="photo-upload">
         <div>
           {this.props.nextButton()}
-          <h2>Add up to 50 photos of your property</h2>
+          <h2>Add up to 5 photos of your property</h2>
           <hr />
           <div class="upload-container">
+            <PhotoUpload
+              onSubmit={value => {
+                let photos = this.state.photos;
+                photos.push(value);
+                this.setState({ photos });
+              }}
+            />
+            <PhotoUpload
+              onSubmit={value => {
+                let photos = this.state.photos;
+                photos.push(value);
+                this.setState({ photos });
+              }}
+            />
+            <PhotoUpload
+              onSubmit={value => {
+                let photos = this.state.photos;
+                photos.push(value);
+                this.setState({ photos });
+              }}
+            />
             <PhotoUpload
               onSubmit={value => {
                 let photos = this.state.photos;
