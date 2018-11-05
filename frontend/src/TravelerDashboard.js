@@ -1,6 +1,6 @@
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-import { fetchMessagesTLR, replyToMessageTLR } from "actions";
+import { fetchMessagesTLR, replyToMessageTLR, fetchProperties } from "actions";
 import { Button, Form, FormGroup, Input } from "reactstrap";
 import Header from "./Header";
 import { Link, Route } from "react-router-dom";
@@ -259,6 +259,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchMessages: id => dispatch(fetchMessagesTLR(id)),
+  fetchMyProperties: id => dispatch(fetchProperties(id)),
   replyToMessage: data => dispatch(replyToMessageTLR(data))
 });
 

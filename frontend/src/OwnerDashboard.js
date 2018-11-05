@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   addProperty,
-  fetchProperties,
+  fetchOwnerProperties,
   fetchMessages,
-  replyToMessage
+  replyToMessage,
+  updateProfile
 } from "actions";
 import Header from "./Header";
 import Inbox from "./Inbox";
@@ -294,9 +295,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onAddProperty: data => dispatch(addProperty(data)),
-  fetchMyProperties: id => dispatch(fetchProperties(id)),
+  fetchMyProperties: id => dispatch(fetchOwnerProperties(id)),
   fetchMessages: id => dispatch(fetchMessages(id)),
-  replyToMessage: data => dispatch(replyToMessage(data))
+  replyToMessage: data => dispatch(replyToMessage(data)),
+  updateProfile: data => dispatch(updateProfile(data))
 });
 
 export default connect(
