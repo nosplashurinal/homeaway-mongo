@@ -31,13 +31,13 @@ class MyProperties extends Component {
         ) : (
           <div className="property-list">
             {properties.map((item, key) => {
-              const image = item.photos[0];
+              const image = item.photos ? item.photos[0] : `/images/photo.svg`;
               return (
                 <Card key={key}>
                   {image ? (
                     <CardImg
                       top
-                      width="100%"
+                      className={item.photos ? '' : 'no-image'}
                       src={image}
                       alt="Card image cap"
                     />
