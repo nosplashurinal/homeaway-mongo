@@ -1,4 +1,6 @@
 import React, { Component, createRef } from "react";
+import { connect } from "react-redux";
+import { fetchMessagesTLR, replyToMessageTLR } from "actions";
 import { Button, Form, FormGroup, Input } from "reactstrap";
 import Header from "./Header";
 import { Link, Route } from "react-router-dom";
@@ -169,9 +171,9 @@ class TravelerDashboard extends Component {
     };
   }
   componentDidMount() {
-    axios.get(`http://localhost:3001/Trips`).then(response => {
-      this.setState({ trips: response.data });
-    });
+    // axios.get(`http://localhost:3001/Trips`).then(response => {
+    //   this.setState({ trips: response.data });
+    // });
   }
   onClickSave = () => {
     const data = {
@@ -189,6 +191,7 @@ class TravelerDashboard extends Component {
   render() {
     const { activeFormGroup, trips, activeNav } = this.state;
     const { userInfo } = this.props;
+    console.log(this.props.messages);
     const activePath = this.props.location.pathname.split("/Traveler/")[1];
     return (
       <div className="traveler">
@@ -201,7 +204,23 @@ class TravelerDashboard extends Component {
           ))}
         </ul>
         <div className="results">
-          <Route path="/Traveler/inbox" component={Inbox} />
+          <Route
+            path="/Traveler/inbox"
+            render={() => (
+              <Inbox
+                allMessages={this.props.messages}
+                iam={this.props.userInfo._id}
+                onMessage={data =>
+                  this.props.replyToMessage({
+                    ...data,
+                    from: this.props.userInfo._id,
+                    name: this.props.userInfo.firstname
+                  })
+                }
+                onLoad={() => this.props.fetchMessages(this.props.userInfo._id)}
+              />
+            )}
+          />
           <Route
             path="/Traveler/trips"
             render={() => (
@@ -233,5 +252,17 @@ class TravelerDashboard extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  messages: state.travelerdashboard.messages,
+  userInfo: state.login.userInfo
+});
 
-export default TravelerDashboard;
+const mapDispatchToProps = dispatch => ({
+  fetchMessages: id => dispatch(fetchMessagesTLR(id)),
+  replyToMessage: data => dispatch(replyToMessageTLR(data))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TravelerDashboard);

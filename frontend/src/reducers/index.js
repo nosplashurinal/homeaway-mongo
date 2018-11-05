@@ -147,7 +147,8 @@ export const listing = (
 const ownerdashboardInit = {
   addPropertyStatus: undefined,
   properties: [],
-  messages: []
+  messages: [],
+  replyStatus: undefined
 };
 
 export const ownerdashboard = (state = ownerdashboardInit, action) => {
@@ -160,6 +161,37 @@ export const ownerdashboard = (state = ownerdashboardInit, action) => {
       return { ...state, messages: action.data.messages };
     case types.MESSAGES_NOT_RECEIVED:
       return state;
+    case types.REPLY_SENT:
+      return { ...state, replyStatus: "Your message has been sent." };
+    case types.REPLY_FAILED:
+      return {
+        ...state,
+        replyStatus: "Sorry, we couldn't send this message."
+      };
+    default:
+      return state;
+  }
+};
+
+const travelerboardInit = {
+  messages: [],
+  replyStatus: undefined
+};
+
+export const travelerdashboard = (state = travelerboardInit, action) => {
+  switch (action.type) {
+    case types.TLR_MESSAGES_RECEIVED:
+      console.log("Messages received", action.data.messages);
+      return { ...state, messages: action.data.messages };
+    case types.TLR_MESSAGES_NOT_RECEIVED:
+      return state;
+    case types.TLR_REPLY_SENT:
+      return { ...state, replyStatus: "Your message has been sent." };
+    case types.TLR_REPLY_FAILED:
+      return {
+        ...state,
+        replyStatus: "Sorry, we couldn't send this message."
+      };
     default:
       return state;
   }
@@ -193,6 +225,7 @@ const rootReducer = combineReducers({
   home,
   listing,
   ownerdashboard,
+  travelerdashboard,
   property,
   toastr: toastrReducer
 });

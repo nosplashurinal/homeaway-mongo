@@ -111,7 +111,7 @@ class Property extends Component {
               searchQuery={this.props.searchQuery}
               onChangeSearch={i => this.onChangeSearch(i)}
               onMessage={data =>
-                this.props.messageOwner({ ...data, from: userInfo._id, to: details.owner })
+                this.props.messageOwner({ ...data, from: userInfo._id, to: details.owner, name: userInfo.firstname })
               }
               onClickBook={() => this.onBook()}
             />

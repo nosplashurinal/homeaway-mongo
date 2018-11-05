@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Messages from "./Messages";
 import "styles/inbox.scss";
+import moment from 'moment';
+import uniqby from 'lodash.uniqby';
 
 const items = [
   {
@@ -13,7 +15,9 @@ class Inbox extends Component {
     super(props);
     this.state = {
       count: 0,
-      senders: []
+      senders: [],
+      conversation: [],
+      activeItem: null
     };
   }
   componentDidMount() {
@@ -22,16 +26,34 @@ class Inbox extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.allMessages.length !== state.count) {
       let senders = props.allMessages.filter(item => item.to === props.iam);
+      senders = uniqby(senders, 'from');
       return {
         senders
       };
     } else return null;
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.activeItem !== this.state.activeItem) {
+      let conversation = this.props.allMessages.filter(
+        item =>
+          item.to === this.props.iam || item.from === this.state.activeItem
+      );
+      conversation.sort((left, right) =>
+        moment.utc(left.timestamp).diff(moment.utc(right.timestamp))
+      );
+      console.log(conversation);
+      this.setState({ conversation });
+    }
+  }
   inboxList = items => (
     <section id={"user_list"}>
       <ul id={"list_container"}>
         {items.map((item, key) => (
-          <li className={"list_item"} key={key}>
+          <li
+            className={"list_item"}
+            key={key}
+            onClick={() => this.setState({ activeItem: item.from })}
+          >
             <a>
               <div className={"user_card"}>
                 <img
@@ -53,7 +75,12 @@ class Inbox extends Component {
     return (
       <div className="inbox">
         <div id="user_list_wrap">{this.inboxList(this.state.senders)}</div>
-        <div id="user_profile_wrap">{/* <Messages orderId={1} /> */}</div>
+        <div id="user_profile_wrap">
+          <Messages
+            conversation={this.state.conversation}
+            submitMessage={data => this.props.onMessage({...data, to: this.state.activeItem})}
+          />
+        </div>
       </div>
     );
   }

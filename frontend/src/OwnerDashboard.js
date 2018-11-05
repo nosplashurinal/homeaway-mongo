@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addProperty, fetchProperties, fetchMessages } from "actions";
+import {
+  addProperty,
+  fetchProperties,
+  fetchMessages,
+  replyToMessage
+} from "actions";
 import Header from "./Header";
 import Inbox from "./Inbox";
 import AddProperty from "./AddProperty";
@@ -203,7 +208,7 @@ class OwnerDashboard extends Component {
       toastr.warning("Hold On!", "You're not signed in.");
       return <Redirect to="/OwnerLogin" />;
     }
-    const { activeFormGroup, activeNav } = this.state;
+    const { activeFormGroup, activeNav, userInfo } = this.state;
     console.log(this.props.messages);
     return (
       <div className="od">
@@ -260,6 +265,13 @@ class OwnerDashboard extends Component {
                 <Inbox
                   allMessages={this.props.messages}
                   iam={this.props.userInfo._id}
+                  onMessage={data =>
+                    this.props.replyToMessage({
+                      ...data,
+                      from: this.props.userInfo._id,
+                      name: this.props.userInfo.firstname
+                    })
+                  }
                   onLoad={() =>
                     this.props.fetchMessages(this.props.userInfo._id)
                   }
@@ -283,7 +295,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onAddProperty: data => dispatch(addProperty(data)),
   fetchMyProperties: id => dispatch(fetchProperties(id)),
-  fetchMessages: id => dispatch(fetchMessages(id))
+  fetchMessages: id => dispatch(fetchMessages(id)),
+  replyToMessage: data => dispatch(replyToMessage(data))
 });
 
 export default connect(

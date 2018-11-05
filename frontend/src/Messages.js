@@ -26,9 +26,13 @@ class Messages extends React.Component {
   }
   onSubmitMessage = () => {
     const content = this.input.current.value;
-    this.input.current.value = '';
-    this.props.submitMessage(content);
+    this.input.current.value = "";
+    this.props.submitMessage({ msgbody: content });
   };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.id !== this.props.id) {
+    }
+  }
   render() {
     return (
       <div id={"comments"} style={{ height: "100%" }}>
@@ -36,14 +40,13 @@ class Messages extends React.Component {
           <div id={"messages"}>
             <div id={"message_container"}>
               <div id={"message_pane_scroller"}>
-                {this.props.messages.map(item => (
+                {this.props.conversation.map(item => (
                   <Message
-                    key={item.id}
-                    avatar={users.userById[1].avatarUrl}
-                    content={item.message}
+                    key={item._id}
+                    avatar={`/images/admin.svg`}
+                    content={item.body}
                     timestamp={item.timestamp}
-                    owner={users.userById[1].name}
-                    team={users.userById[1].team}
+                    owner={item.sendername}
                   />
                 ))}
               </div>
@@ -53,7 +56,10 @@ class Messages extends React.Component {
         <div id={"body"}>
           <form onSubmit={e => e.preventDefault()}>
             <div className={"editor"}>
-              <textarea ref={this.input} onChange={() => this.onChange()} placeholder="Type a message..." />
+              <textarea
+                ref={this.input}
+                placeholder="Type a message..."
+              />
             </div>
             <button
               id={"submit"}

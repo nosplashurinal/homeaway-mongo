@@ -146,7 +146,7 @@ export const saveSearch = data => {
 
 export const fetchSearchResults = params => {
   return dispatch => {
-    return axios.get(`http://localhost:3001/OwnerDash/MyProps`).then(
+    return axios.get(`http://localhost:3001/PropertyList`, { params }).then(
       res => {
         dispatch(saveSearchResults({ properties: res.data }));
       },
@@ -228,38 +228,129 @@ const messageFailed = () => {
 };
 
 export const messageOwner = data => {
+  console.log(data);
   return dispatch => {
-    return axios.post("http://localhost:3001/AddMessage", data).then(response => {
-      if (response.status === 200) {
-        dispatch(messageSent(response.data));
-      } else {
-        dispatch(messageFailed());
-      }
-    })
-  }
-}
+    return axios
+      .post("http://localhost:3001/AddMessage", data)
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(messageSent(response.data));
+        } else {
+          dispatch(messageFailed());
+        }
+      });
+  };
+};
+
+const replySent = data => {
+  return {
+    type: types.REPLY_SENT,
+    data
+  };
+};
+
+const replyFailed = () => {
+  return {
+    type: types.REPLY_FAILED
+  };
+};
+
+export const replyToMessage = data => {
+  console.log(data);
+  return dispatch => {
+    return axios
+      .post("http://localhost:3001/AddMessage", data)
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(replySent(response.data));
+        } else {
+          dispatch(replyFailed());
+        }
+      });
+  };
+};
 
 const messagesReceived = data => {
   return {
     type: types.MESSAGES_RECEIVED,
     data
-  }
+  };
 };
 
 const messagesNotReceived = () => {
   return {
     type: types.MESSAGES_NOT_RECEIVED
-  }
-}
+  };
+};
 
 export const fetchMessages = id => {
   return dispatch => {
-    return axios.get(`http://localhost:3001/FetchMessages?id=${id}`).then(response => {
-      if (response.status === 200) {
-        dispatch(messagesReceived(response.data));
-      } else {
-        dispatch(messagesNotReceived());
-      }
-    })
-  }
-}
+    return axios
+      .get(`http://localhost:3001/FetchMessages?id=${id}`)
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(messagesReceived(response.data));
+        } else {
+          dispatch(messagesNotReceived());
+        }
+      });
+  };
+};
+
+/////////
+
+const replySentTLR = data => {
+  return {
+    type: types.TLR_REPLY_SENT,
+    data
+  };
+};
+
+const replyFailedTLR = () => {
+  return {
+    type: types.TLR_REPLY_FAILED
+  };
+};
+
+export const replyToMessageTLR = data => {
+  console.log(data);
+  return dispatch => {
+    return axios
+      .post("http://localhost:3001/AddMessage", data)
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(replySent(response.data));
+        } else {
+          dispatch(replyFailed());
+        }
+      });
+  };
+};
+
+const messagesReceivedTLR = data => {
+  return {
+    type: types.TLR_MESSAGES_RECEIVED,
+    data
+  };
+};
+
+const messagesNotReceivedTLR = () => {
+  return {
+    type: types.TLR_MESSAGES_NOT_RECEIVED
+  };
+};
+
+export const fetchMessagesTLR = id => {
+  return dispatch => {
+    return axios
+      .get(`http://localhost:3001/FetchMessages?id=${id}`)
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(messagesReceivedTLR(response.data));
+        } else {
+          dispatch(messagesNotReceivedTLR());
+        }
+      });
+  };
+};
+

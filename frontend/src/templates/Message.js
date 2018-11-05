@@ -1,7 +1,8 @@
 import React from "react";
 import "styles/message.scss";
+import moment from "moment";
 
-const Message = ({ avatar, content, owner, team, timestamp }) => {
+const Message = ({ avatar, content, owner, timestamp }) => {
   return (
     <div id={"message"}>
       <div id={"gutter"}>
@@ -17,15 +18,11 @@ const Message = ({ avatar, content, owner, team, timestamp }) => {
       <div id={"content"}>
         <div id={"header"}>
           <span>{owner}</span>
-          ,&nbsp;
-          <span>{team}</span>
         </div>
         <span id={"body"}>{content}</span>
         <div id={"footer"}>
           <div id={"timestamp"}>
-            <span>{timestamp.date}</span>
-            ,&nbsp;
-            <span>{timestamp.time}</span>
+            <span>{moment(timestamp).format("dddd, MMMM Do YYYY")}</span>
           </div>
         </div>
       </div>
