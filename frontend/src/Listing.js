@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ImageGallery from "templates/ImageGallery";
 import RatingDisplay from "templates/RatingDisplay";
-import { fetchSearchResults } from "actions";
+import { fetchSearchResults, saveSearch } from "actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "./Header";
@@ -14,20 +14,32 @@ class Listing extends Component {
     super(props);
   }
   componentDidMount() {
-    const guests = this.props.searchQuery.guests;
+    this.props.fetchSearchResults({ ...this.props.searchQuery });
+  }
+  onChangeSearch = query => this.props.saveSearch(query);
+  onClickSearch = () => {
+    const { pets, adults, children } = this.props.searchQuery;
     this.props.fetchSearchResults({
       ...this.props.searchQuery,
-      guests: guests.adults + guests.children,
-      pets: guests.pets
+      guests: adults + children,
+      pets: pets,
+      min: 0,
+      max: 200
     });
-  }
+  };
   render() {
     const { properties, isLoading } = this.props;
     return (
       <div className="listing">
         <div className="top-container">
           <Header showLogin userInfo={this.props.userInfo} />
-          <Search searchQuery={this.props.searchQuery} />
+          <Search
+            userInfo={this.props.userInfo}
+            onClick={i => this.onClickSearch(i)}
+            onChange={i => this.onChangeSearch(i)}
+            searchQuery={this.props.searchQuery}
+            showFilters
+          />
         </div>
         {isLoading ? (
           <div className="loader">
@@ -81,7 +93,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchSearchResults: query => dispatch(fetchSearchResults(query))
+  fetchSearchResults: query => dispatch(fetchSearchResults(query)),
+  saveSearch: query => dispatch(saveSearch(query))
 });
 
 export default connect(

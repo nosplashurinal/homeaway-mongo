@@ -123,6 +123,25 @@ export const registerUser = data => {
 //     );
 //   };
 // };
+export const saveTrips = data => {
+  return {
+    type: types.SAVE_TRIPS,
+    data
+  };
+};
+
+export const fetchTrips = () => {
+  return dispatch => {
+    return axios.get(`http://52.53.176.19:3001/TravelerDash`).then(
+      res => {
+        dispatch(saveTrips({ properties: res.data }));
+      },
+      err => {
+        console.log("Failed to fetch your trips!");
+      }
+    );
+  };
+};
 
 export const fetchOwnerProperties = () => {
   return dispatch => {

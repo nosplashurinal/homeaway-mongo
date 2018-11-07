@@ -1,6 +1,6 @@
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-import { fetchMessagesTLR, replyToMessageTLR, fetchProperties } from "actions";
+import { fetchMessagesTLR, replyToMessageTLR, fetchTrips } from "actions";
 import { Button, Form, FormGroup, Input } from "reactstrap";
 import Header from "./Header";
 import { Link, Route } from "react-router-dom";
@@ -65,10 +65,10 @@ const MyTrips = ({ trips, activeNav, setActiveNav, userInfo }) => {
         <ul className="trip-list">
           {trips.map((item, key) => (
             <div className="list-item" key={key}>
-              <ImageGallery
+              {/* <ImageGallery
                 showThumbnail={false}
                 images={images[userInfo.userid]}
-              />
+              /> */}
               <div className="right-container">
                 <div className="top-container">
                   <Link to={`/Property/${item.propertyid}`}>
@@ -166,14 +166,11 @@ class TravelerDashboard extends Component {
     this.ref4 = createRef();
     this.state = {
       activeFormGroup: undefined,
-      trips: [],
       activeNav: "upcoming"
     };
   }
   componentDidMount() {
-    // axios.get(`http://localhost:3001/Trips`).then(response => {
-    //   this.setState({ trips: response.data });
-    // });
+    this.props.fetchTrips()
   }
   onClickSave = () => {
     const data = {
@@ -182,16 +179,14 @@ class TravelerDashboard extends Component {
       location: this.ref3.current.value
     };
 
-    console.log(data);
     axios.post("http://localhost:3001/UpdateUser", data).then(response => {
       console.log("User profile updated", response.data);
     });
   };
   setActiveNav = item => this.setState({ activeNav: item.value });
   render() {
-    const { activeFormGroup, trips, activeNav } = this.state;
-    const { userInfo } = this.props;
-    console.log(this.props.messages);
+    const { activeFormGroup, activeNav } = this.state;
+    const { userInfo, trips } = this.props;
     const activePath = this.props.location.pathname.split("/Traveler/")[1];
     return (
       <div className="traveler">
@@ -254,12 +249,13 @@ class TravelerDashboard extends Component {
 }
 const mapStateToProps = state => ({
   messages: state.travelerdashboard.messages,
-  userInfo: state.login.userInfo
+  userInfo: state.login.userInfo,
+  trips: state.travelerdashboard.trips
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchMessages: id => dispatch(fetchMessagesTLR(id)),
-  fetchMyProperties: id => dispatch(fetchProperties(id)),
+  fetchTrips: id => dispatch(fetchTrips(id)),
   replyToMessage: data => dispatch(replyToMessageTLR(data))
 });
 

@@ -87,7 +87,7 @@ class Property extends Component {
       <div className="product-page">
         <div className="headers">
           <Header showLogin userInfo={this.props.userInfo} />
-          <Search searchQuery={this.props.searchQuery} />
+          <Search searchQuery={this.props.searchQuery} showFilters />
         </div>
         <div className="top-container">
           {details.photos ? (
