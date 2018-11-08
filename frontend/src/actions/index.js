@@ -73,7 +73,7 @@ export const saveAddPropertyStatus = status => {
 export const handleLogin = data => {
   return dispatch => {
     axios.defaults.withCredentials = true;
-    return axios.post("http://52.53.176.19:3001/Login", data).then(
+    return axios.post("http://54.193.84.204:3001/Login", data).then(
       res => {
         dispatch(loginSuccess(res.data));
       },
@@ -86,7 +86,7 @@ export const handleLogin = data => {
 
 export const handleLogout = () => {
   return dispatch => {
-    return axios.get("http://52.53.176.19:3001/Logout").then(
+    return axios.get("http://54.193.84.204:3001/Logout").then(
       () => {
         dispatch(logoutSuccess());
       },
@@ -101,7 +101,7 @@ export const registerUser = data => {
   return dispatch => {
     axios.defaults.withCredentials = true;
     return axios
-      .post("http://52.53.176.19:3001/Register", data)
+      .post("http://54.193.84.204:3001/Register", data)
       .then(res => {
         dispatch(registerSuccess(res.data));
       })
@@ -113,7 +113,7 @@ export const registerUser = data => {
 
 // export const fetchTravelerProperties = () => {
 //   return dispatch => {
-//     return axios.get(`http://52.53.176.19:3001/TravelerDash`).then(
+//     return axios.get(`http://54.193.84.204:3001/TravelerDash`).then(
 //       res => {
 //         dispatch(saveTravelerProperties({ properties: res.data }));
 //       },
@@ -132,7 +132,7 @@ export const saveTrips = data => {
 
 export const fetchTrips = () => {
   return dispatch => {
-    return axios.get(`http://52.53.176.19:3001/TravelerDash`).then(
+    return axios.get(`http://54.193.84.204:3001/TravelerDash`).then(
       res => {
         dispatch(saveTrips({ properties: res.data }));
       },
@@ -145,7 +145,7 @@ export const fetchTrips = () => {
 
 export const fetchOwnerProperties = () => {
   return dispatch => {
-    return axios.get(`http://52.53.176.19:3001/OwnerDash/MyProps`).then(
+    return axios.get(`http://54.193.84.204:3001/OwnerDash/MyProps`).then(
       res => {
         dispatch(saveOwnerProperties({ properties: res.data }));
       },
@@ -165,7 +165,7 @@ export const saveSearch = data => {
 
 export const fetchSearchResults = params => {
   return dispatch => {
-    return axios.get(`http://52.53.176.19:3001/PropertyList`, { params }).then(
+    return axios.get(`http://54.193.84.204:3001/PropertyList`, { params }).then(
       res => {
         dispatch(saveSearchResults({ properties: res.data }));
       },
@@ -178,7 +178,7 @@ export const fetchSearchResults = params => {
 
 export const fetchPropertyDetails = (id, params) => {
   return dispatch => {
-    return axios.get(`http://52.53.176.19:3001/Property/${id}`).then(
+    return axios.get(`http://54.193.84.204:3001/Property/${id}`).then(
       res => {
         dispatch(savePropertyDetails({ details: res.data }));
       },
@@ -200,7 +200,7 @@ export const addProperty = data => {
   console.log(data);
   return dispatch => {
     return axios
-      .post("http://52.53.176.19:3001/AddProperty", data)
+      .post("http://54.193.84.204:3001/AddProperty", data)
       .then(response => {
         console.log("Axios POST response:", response.status);
         dispatch(saveAddPropertyStatus(response.status));
@@ -224,7 +224,7 @@ const bookingFailure = () => {
 export const book = data => {
   return dispatch => {
     return axios
-      .post("http://52.53.176.19:3001/Booking", data)
+      .post("http://54.193.84.204:3001/Booking", data)
       .then(response => {
         if (response.status === 200) {
           dispatch(bookingSuccess(response.data));
@@ -252,7 +252,7 @@ export const messageOwner = data => {
   console.log(data);
   return dispatch => {
     return axios
-      .post("http://52.53.176.19:3001/AddMessage", data)
+      .post("http://54.193.84.204:3001/AddMessage", data)
       .then(response => {
         if (response.status === 200) {
           dispatch(messageSent(response.data));
@@ -280,7 +280,7 @@ export const replyToMessage = data => {
   console.log(data);
   return dispatch => {
     return axios
-      .post("http://52.53.176.19:3001/AddMessage", data)
+      .post("http://54.193.84.204:3001/AddMessage", data)
       .then(response => {
         if (response.status === 200) {
           dispatch(replySent(response.data));
@@ -307,7 +307,7 @@ const messagesNotReceived = () => {
 export const fetchMessages = id => {
   return dispatch => {
     return axios
-      .get(`http://52.53.176.19:3001/FetchMessages?id=${id}`)
+      .get(`http://54.193.84.204:3001/FetchMessages?id=${id}`)
       .then(response => {
         if (response.status === 200) {
           dispatch(messagesReceived(response.data));
@@ -337,7 +337,7 @@ export const replyToMessageTLR = data => {
   console.log(data);
   return dispatch => {
     return axios
-      .post("http://52.53.176.19:3001/AddMessage", data)
+      .post("http://54.193.84.204:3001/AddMessage", data)
       .then(response => {
         if (response.status === 200) {
           dispatch(replySent(response.data));
@@ -364,7 +364,7 @@ const messagesNotReceivedTLR = () => {
 export const fetchMessagesTLR = id => {
   return dispatch => {
     return axios
-      .get(`http://52.53.176.19:3001/FetchMessages?id=${id}`)
+      .get(`http://54.193.84.204:3001/FetchMessages?id=${id}`)
       .then(response => {
         if (response.status === 200) {
           dispatch(messagesReceivedTLR(response.data));

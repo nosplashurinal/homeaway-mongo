@@ -15,7 +15,7 @@ class PhotoUpload extends Component {
     const formData = new FormData();
     formData.append("file", this.state.file[0]);
     axios
-      .post("http://52.53.176.19:3001/PhotoUpload", formData, {
+      .post("http://54.193.84.204:3001/PhotoUpload", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
