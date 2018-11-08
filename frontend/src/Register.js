@@ -107,7 +107,9 @@ class RegisterContainer extends Component {
   };
   componentDidUpdate() {
     if (this.props.registerSuccess) {
-      toastr.success(this.props.message);
+      toastr.success(
+        this.props.message || "Success! You've registered. Please log in now."
+      );
     }
   }
   onEnter = () => this.props.handleSubmit();

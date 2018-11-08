@@ -5,6 +5,7 @@ import RadioGroup from "templates/RadioGroup";
 import RatingDisplay from "templates/RatingDisplay";
 import Dropdown from "templates/Dropdown";
 import MessageModal from "templates/MessageModal";
+import { Popover, PopoverHeader, PopoverBody } from "reactstrap";
 import moment from "moment";
 import "react-dates/lib/css/_datepicker.css";
 import "react-dates/initialize";
@@ -16,7 +17,8 @@ class PropertyDetails extends Component {
     this.state = {
       dropdownIsOpen: false,
       openMessageModal: false,
-      modalIsOpen: false
+      modalIsOpen: false,
+      showError: false
     };
   }
   openModal = () => {
@@ -25,11 +27,39 @@ class PropertyDetails extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+  onClickBook = () => {
+    const { searchQuery } = this.props;
+    searchQuery.startDate && searchQuery.endDate
+      ? this.props.onClickBook()
+      : this.setState({
+          showError: true
+        });
+  };
+  static getDerivedStateFromProps(props, state) {
+    if (state.showError) {
+      if (
+        props.searchQuery.startDate !== undefined &&
+        !!props.searchQuery.endDate
+      ) {
+        return {
+          showError: false
+        };
+      }
+    }
+    return null;
+  }
   toggleDropdown = () =>
     this.setState({ dropdownIsOpen: !this.state.dropdownIsOpen });
   render() {
     const { focusedInput, dropdownIsOpen } = this.state;
-    const { guests, startDate, endDate, location } = this.props.searchQuery;
+    const {
+      adults,
+      children,
+      pets,
+      startDate,
+      endDate,
+      location
+    } = this.props.searchQuery;
     const { item } = this.props;
     return (
       <div className="property-details">
@@ -56,11 +86,11 @@ class PropertyDetails extends Component {
         </div>
         {item.rating !== undefined && <RatingDisplay rating={item.rating} />}
         <div className="user-selection">
-          {(!!startDate && !!endDate) ||
+          {(!!startDate && !!endDate) || (
             <p className="availability-message">
               Enter dates for accurate pricing.
             </p>
-          }
+          )}
           <DateRangePicker
             startDate={startDate === null ? null : moment(startDate)} // momentPropTypes.momentObj or null,
             startDateId="check_in" // PropTypes.string.isRequired,
@@ -70,7 +100,9 @@ class PropertyDetails extends Component {
                 : moment(startDate).format("YYYY-MM-DD")
             }
             endDatePlaceholderText={
-              endDate === null ? "Check Out" : moment(endDate).format("YYYY-MM-DD")
+              endDate === null
+                ? "Check Out"
+                : moment(endDate).format("YYYY-MM-DD")
             }
             endDate={endDate === null ? null : moment(endDate)} // momentPropTypes.momentObj or null,
             endDateId="check_out" // PropTypes.string.isRequired,
@@ -92,10 +124,10 @@ class PropertyDetails extends Component {
             <button
               type="button"
               className="guest-selector"
-              onClick={() => this.toggleDropdown()}
-            >{`${guests.adults + guests.children} Guest${
-              guests.adults + guests.children > 1 ? "s" : ""
-            } ${guests.pets ? ", Pets" : ""}`}</button>
+              onClick={this.toggleDropdown}
+            >{`${adults + children} Guest${adults + children > 1 ? "s" : ""} ${
+              pets ? ", Pets" : ""
+            }`}</button>
             <Dropdown
               isOpen={dropdownIsOpen}
               onClick={() => this.toggleDropdown()}
@@ -113,13 +145,11 @@ class PropertyDetails extends Component {
                   { label: "Yes", value: "yes" },
                   { label: "No", value: "no" }
                 ]}
-                checked={guests.pets ? "yes" : "no"}
+                checked={pets ? "yes" : "no"}
                 onChange={i =>
-                  this.setState({
-                    guests: {
-                      ...guests,
-                      pets: i === "yes" ? true : false
-                    }
+                  this.props.onChange({
+                    ...this.props.searchQuery,
+                    pets: i === "yes" ? true : false
                   })
                 }
               />
@@ -148,12 +178,22 @@ class PropertyDetails extends Component {
           </div>
         </div>
         <button
-          onClick={() => this.props.onClickBook()}
+          onClick={() => this.onClickBook()}
           type="button"
           className="request-book main-btn"
+          id="Popover1"
         >
           Book Now
         </button>
+        <Popover
+          className="error-popup"
+          placement="bottom"
+          isOpen={this.state.showError}
+          target="Popover1"
+        >
+          <PopoverHeader>Error</PopoverHeader>
+          <PopoverBody>You have not entered dates.</PopoverBody>
+        </Popover>
         <button
           className="ask-question"
           onClick={() => this.setState({ openMessageModal: true })}

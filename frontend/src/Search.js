@@ -117,7 +117,7 @@ class Search extends Component {
               onIncrement={i =>
                 this.props.onChange({
                   ...this.props.searchQuery,
-                  adults: adults + i
+                  adults: i
                 })
               }
             />
@@ -127,7 +127,7 @@ class Search extends Component {
               onIncrement={i =>
                 this.props.onChange({
                   ...this.props.searchQuery,
-                  children: children + i
+                  children: i
                 })
               }
             />

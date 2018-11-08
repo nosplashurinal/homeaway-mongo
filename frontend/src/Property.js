@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ImageGallery from "templates/ImageGallery";
-import { fetchPropertyDetails, book, messageOwner } from "actions";
+import { fetchPropertyDetails, book, messageOwner, saveSearch } from "actions";
 import axios from "axios";
 import PropertyDetails from "./PropertyDetails";
 import { connect } from "react-redux";
@@ -55,6 +55,7 @@ class Property extends Component {
       this.props.onBook(data);
     }
   };
+  onChangeSearch = query => this.props.saveSearch(query);
   componentDidUpdate(prevProps, prevState) {
     const { bookingInfo } = this.props;
     if (prevProps.details !== this.props.details) {
@@ -67,8 +68,9 @@ class Property extends Component {
       const enddate = moment(bookingInfo.enddate).format("dddd, MMMM Do YYYY");
       toastr.success(
         "Success!",
-        `Your reservation between ${startdate} and ${enddate} has been made. Hope you enjoy your stay!`
+        `Your reservation between ${startdate} and ${enddate} has been made.`
       );
+      toastr.info("Hope you enjoy your stay!");
       this.props.history.push("/Traveler/trips");
     }
   }
@@ -87,7 +89,11 @@ class Property extends Component {
       <div className="product-page">
         <div className="headers">
           <Header showLogin userInfo={this.props.userInfo} />
-          <Search searchQuery={this.props.searchQuery} showFilters />
+          <Search
+            searchQuery={this.props.searchQuery}
+            onChange={i => this.onChangeSearch(i)}
+            showFilters
+          />
         </div>
         <div className="top-container">
           {details.photos ? (
@@ -111,7 +117,12 @@ class Property extends Component {
               searchQuery={this.props.searchQuery}
               onChangeSearch={i => this.onChangeSearch(i)}
               onMessage={data =>
-                this.props.messageOwner({ ...data, from: userInfo._id, to: details.owner, name: userInfo.firstname })
+                this.props.messageOwner({
+                  ...data,
+                  from: userInfo._id,
+                  to: details.owner,
+                  name: userInfo.firstname
+                })
               }
               onClickBook={() => this.onBook()}
             />
@@ -158,7 +169,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchPropertyDetails: id => dispatch(fetchPropertyDetails(id)),
   onBook: data => dispatch(book(data)),
-  messageOwner: data => dispatch(messageOwner(data))
+  messageOwner: data => dispatch(messageOwner(data)),
+  saveSearch: query => dispatch(saveSearch(query))
 });
 
 export default connect(

@@ -22,18 +22,6 @@ const navList = [
 ];
 
 const MyTrips = ({ trips, activeNav, setActiveNav, userInfo }) => {
-  // bathrooms: 3
-  // bedrooms: 3
-  // bookedflag: 1
-  // enddate: "2018-10-09T18:30:00.000Z"
-  // location: "san jose"
-  // name: "hhsghgfjjh"
-  // ownerid: 2
-  // price: 123
-  // propertyid: 1
-  // sleeps: 3
-  // startdate: "2018-10-07T18:30:00.000Z"
-  // type: "gfghfhgjjhg"
   return (
     <div className="mytrips">
       <ul className="nav-list">
@@ -170,7 +158,7 @@ class TravelerDashboard extends Component {
     };
   }
   componentDidMount() {
-    this.props.fetchTrips()
+    this.props.fetchTrips();
   }
   onClickSave = () => {
     const data = {
