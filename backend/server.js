@@ -11,7 +11,7 @@ app.use(cookieParser());
 
 //Cors
 const cors = require("cors");
-app.use(cors({ origin: "http://13.57.242.230:80", credentials: true }));
+app.use(cors({ origin: "http://13.57.242.230", credentials: true }));
 
 //Passport
 const passport = require("passport");
@@ -33,7 +33,7 @@ app.set("view engine", "ejs");
 
 //Allow Access Control
 app.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://13.57.242.230:80");
+  res.setHeader("Access-Control-Allow-Origin", "http://13.57.242.230");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",
