@@ -9,9 +9,9 @@ app.get("*.js", function(req, res, next) {
 });
 app.use(cookieParser());
 
-//Cors
-//const cors = require("cors");
-//app.use(cors({ origin: "http://13.57.242.230", credentials: true }));
+Cors;
+const cors = require("cors");
+app.use(cors({ origin: "http://13.57.242.230", credentials: true }));
 
 //Passport
 const passport = require("passport");
@@ -117,6 +117,7 @@ app.post("/Login", (req, res, next) => {
           httpOnly: false,
           path: "/"
         });
+        console.log("Response", res);
         res.status(200).json({
           email: user.email,
           firstname: user.firstname,
