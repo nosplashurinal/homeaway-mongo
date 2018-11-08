@@ -116,13 +116,13 @@ app.post("/Login", (req, res, next) => {
           httpOnly: true
         });
         console.log("Response", res);
-        res.status(200).json({
-          email: user.email,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          type: user.type,
-          _id: user._id
-        });
+        // res.status(200).json({
+        //   email: user.email,
+        //   firstname: user.firstname,
+        //   lastname: user.lastname,
+        //   type: user.type,
+        //   _id: user._id
+        // });
       });
     })(req, res, next);
   }
