@@ -117,7 +117,9 @@ const homeInit = {
     adults: 1,
     children: 0,
     pets: false,
-    location: undefined
+    location: undefined,
+    min: 0,
+    max: 500
   }
 };
 
@@ -180,7 +182,6 @@ const travelerboardInit = {
 export const travelerdashboard = (state = travelerboardInit, action) => {
   switch (action.type) {
     case types.TLR_MESSAGES_RECEIVED:
-      console.log("Messages received", action.data.messages);
       return { ...state, messages: action.data.messages };
     case types.TLR_MESSAGES_NOT_RECEIVED:
       return state;

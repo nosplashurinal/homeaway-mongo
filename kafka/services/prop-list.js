@@ -7,7 +7,12 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 const PropModel = require("../models/property");
 function handle_request(msg, callback) {
   console.log("Location :", msg.location);
-  PropModel.find({ location: msg.location })
+  PropModel.find({
+    location: msg.location,
+    sleeps: { $eq: msg.guests },
+    price: { $gte: msg.min },
+    price: { $lte: msg.max }
+  })
 
     .then(properties => {
       callback(null, properties);

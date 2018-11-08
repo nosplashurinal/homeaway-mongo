@@ -5,8 +5,8 @@ import { fetchSearchResults, saveSearch } from "actions";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Header from "./Header";
-import queryString from "query-string";
 import Search from "./Search";
+import Filters from "./Filters";
 import "styles/listing.scss";
 
 class Listing extends Component {
@@ -18,13 +18,21 @@ class Listing extends Component {
   }
   onChangeSearch = query => this.props.saveSearch(query);
   onClickSearch = () => {
-    const { pets, adults, children } = this.props.searchQuery;
+    const {
+      pets,
+      adults,
+      children,
+      min,
+      max,
+      bedrooms
+    } = this.props.searchQuery;
     this.props.fetchSearchResults({
       ...this.props.searchQuery,
       guests: adults + children,
       pets: pets,
-      min: 0,
-      max: 200
+      min,
+      max,
+      bedrooms
     });
   };
   render() {
@@ -33,6 +41,10 @@ class Listing extends Component {
       <div className="listing">
         <div className="top-container">
           <Header showLogin userInfo={this.props.userInfo} />
+          <Filters
+            onChange={i => this.onChangeSearch(i)}
+            searchQuery={this.props.searchQuery}
+          />
           <Search
             userInfo={this.props.userInfo}
             onClick={i => this.onClickSearch(i)}

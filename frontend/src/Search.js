@@ -48,9 +48,8 @@ class Search extends Component {
           className={`location-search${showError && !location ? " error" : ""}${
             this.props.showFilters ? " filtersActive" : ""
           }`}
-          placeholder={`${
-            location !== undefined ? location : "Where do you want to go?"
-          }`}
+          placeholder={"Where do you want to go?"}
+          value={`${location !== undefined ? location : ""}`}
           onKeyPress={e => e.key == "Enter" && this.onEnter()}
           onFocus={() => this.setState({ showError: false })}
           onChange={e =>
@@ -156,34 +155,6 @@ class Search extends Component {
             </div>
           </Dropdown>
         </div>
-        {this.props.showFilters && (
-          <Fragment>
-            <div className="v-line" />
-            <input className="bedroom-filter" placeholder="Bedrooms" />
-            <div className="v-line" />
-            <div className="price-filter">
-              <input
-                placeholder="Min Price"
-                onChange={i =>
-                  this.props.onChange({
-                    ...this.props.searchQuery,
-                    minPrice: i.target.value
-                  })
-                }
-              />
-              <div className="v-line" />
-              <input
-                placeholder="Max Price"
-                onChange={i =>
-                  this.props.onChange({
-                    ...this.props.searchQuery,
-                    maxPrice: i.target.value
-                  })
-                }
-              />
-            </div>
-          </Fragment>
-        )}
         <div className="v-line" />
         <div className="submit">
           <button type="button" id="Popover2" onClick={this.onClickSearch}>
