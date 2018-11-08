@@ -115,7 +115,7 @@ app.post("/Login", (req, res, next) => {
           //expires: new Date(Date.now() + 900000),
           httpOnly: true
         });
-        console.log("Response", res);
+        res.end();
         // res.status(200).json({
         //   email: user.email,
         //   firstname: user.firstname,
