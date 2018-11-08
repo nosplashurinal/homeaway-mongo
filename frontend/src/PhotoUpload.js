@@ -15,7 +15,7 @@ class PhotoUpload extends Component {
     const formData = new FormData();
     formData.append("file", this.state.file[0]);
     axios
-      .post("http://localhost:3001/PhotoUpload", formData, {
+      .post("http://52.53.176.19:3001/PhotoUpload", formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }
@@ -40,7 +40,7 @@ class PhotoUpload extends Component {
   render() {
     return (
       <form
-        className={`photo-form${this.state.isUploaded ? ' active' : ''}`}
+        className={`photo-form${this.state.isUploaded ? " active" : ""}`}
         style={{
           backgroundImage: this.state.isUploaded
             ? `url(${this.state.url})`
