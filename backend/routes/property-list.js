@@ -27,10 +27,10 @@ router.get(
 );
 
 router.get(
-  "/",
+  "/:min/:max",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    let min, max;
+    let { min, max } = req.params;
     PropModel.find({
       $and: [{ price: { $gte: min } }, { price: { $lte: max } }]
     })
