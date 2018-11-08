@@ -1,0 +1,44 @@
+@import 'constants.scss';
+
+.homeaway-pagination {
+    display: block;
+    margin-bottom: 4vh;
+    text-align: left;
+    > a {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 32px;
+      padding: 0 16px;
+      cursor: pointer;
+      color: $blue!important;
+    }
+    > div {
+      display: inline-block;
+      &:after {
+        display: inline-block;
+        content: '...';
+        font-size: 32px;
+        color: #434343;
+      }
+    }
+}
+.page_marker {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    font-family: $font;
+    color: $black;
+    margin: 4px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    -webkit-box-shadow: 6px 3px 10px 0px rgba(0,0,0,0.05);
+    -moz-box-shadow: 6px 3px 10px 0px rgba(0,0,0,0.05);
+    box-shadow: 6px 3px 10px 0px rgba(0,0,0,0.05);
+    background-color: #FFF;
+    transition: all .4s ease;
+    &.active {
+      background-color: #868686;
+      color: #FFF;
+    }
+}
