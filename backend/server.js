@@ -113,8 +113,7 @@ app.post("/Login", (req, res, next) => {
         res.cookie("jwt", token, {
           maxAge: 900000,
           //expires: new Date(Date.now() + 900000),
-          httpOnly: false,
-          path: "/"
+          httpOnly: true
         });
         console.log("Response", res);
         res.status(200).json({
