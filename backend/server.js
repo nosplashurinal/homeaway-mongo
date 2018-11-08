@@ -135,6 +135,7 @@ app.post("/PhotoUpload", (req, res) => {
     }
   });
 });
+
 app.use("/Login", require("./routes/login"));
 app.use("/Register", require("./routes/register"));
 app.use("/PropertyList", require("./routes/property-list"));
@@ -151,6 +152,11 @@ app.get("*.js", function(req, res, next) {
   req.url = req.url + ".gz";
   res.set("Content-Encoding", "gzip");
   next();
+});
+
+app.get("/Logout", function(req, res) {
+  req.logout();
+  res.redirect("/");
 });
 //Server listening
 app.listen(3001, () => {
