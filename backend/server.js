@@ -113,16 +113,15 @@ app.post("/Login", (req, res, next) => {
         res.cookie("jwt", token, {
           maxAge: 900000,
           //expires: new Date(Date.now() + 900000),
-          httpOnly: true
+          httpOnly: false
         });
-        res.end();
-        // res.status(200).json({
-        //   email: user.email,
-        //   firstname: user.firstname,
-        //   lastname: user.lastname,
-        //   type: user.type,
-        //   _id: user._id
-        // });
+        res.status(200).json({
+          email: user.email,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          type: user.type,
+          _id: user._id
+        });
       });
     })(req, res, next);
   }
