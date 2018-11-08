@@ -42,7 +42,8 @@ router.post("/", (req, res, next) => {
 
         /** assign our jwt to the cookie */
         res.cookie("jwt", token, {
-          expires: new Date(Date.now() + 900000),
+          maxAge: 900000,
+          //expires: new Date(Date.now() + 900000),
           httpOnly: false
         });
         res.status(200).json({
