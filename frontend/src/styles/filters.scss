@@ -1,0 +1,19 @@
+@import 'constants.scss';
+
+.filters {
+  padding: 12px 46px;
+  display: flex;
+  .price-filter {
+    flex: 0 1 50%;
+  }
+  .bedroom-filter {
+    flex: none;
+    width: auto;
+    margin-left: 40px;
+  }
+  .rc-slider-handle {
+    margin-top: -7px!important;
+    width: 24px!important;
+    height: 24px!important;
+  }
+}
