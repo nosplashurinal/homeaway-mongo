@@ -10,8 +10,8 @@ app.get("*.js", function(req, res, next) {
 app.use(cookieParser());
 
 //Cors
-const cors = require("cors");
-app.use(cors({ origin: "http://13.57.242.230", credentials: true }));
+//const cors = require("cors");
+//app.use(cors({ origin: "http://13.57.242.230", credentials: true }));
 
 //Passport
 const passport = require("passport");

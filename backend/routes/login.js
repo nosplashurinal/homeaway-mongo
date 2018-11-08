@@ -44,7 +44,8 @@ router.post("/", (req, res, next) => {
         res.cookie("jwt", token, {
           maxAge: 900000,
           //expires: new Date(Date.now() + 900000),
-          httpOnly: false
+          httpOnly: false,
+          path: "/"
         });
         res.status(200).json({
           email: user.email,
