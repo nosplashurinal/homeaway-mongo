@@ -205,6 +205,7 @@ app.get("*.js", function(req, res, next) {
 
 app.get("/Logout", function(req, res) {
   req.logout();
+  res.redirect("/");
 });
 //Server listening
 app.listen(3001, () => {
