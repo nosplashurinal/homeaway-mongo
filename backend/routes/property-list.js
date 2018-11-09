@@ -16,6 +16,7 @@ router.get(
     console.log("req.query : ", req.query);
     let payload = {
       location: req.query.location,
+      sleeps: parseInt(req.query.guests),
       min: parseInt(req.query.min),
       max: parseInt(req.query.max)
     };
