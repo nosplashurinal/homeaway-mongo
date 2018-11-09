@@ -9,10 +9,10 @@ router.post("/", (req, res) => {
 
     if (err) {
       console.log("Error creating user!", err);
-      res.sendStatus(400).end();
+      res.status(400).end();
     } else if (results.success === "fail") {
       console.log("Email already exists!");
-      res.status(400).end();
+      res.status(400).send("Email already exists!");
     } else {
       console.log("User created : ", results);
       res.status(200).json({ results });
