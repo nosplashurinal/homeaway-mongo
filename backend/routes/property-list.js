@@ -14,7 +14,12 @@ router.get(
   (req, res) => {
     console.log("Inside Property List Page");
     console.log("req.query : ", req.query);
-    kafka.make_request("property_list", req.query, function(err, result) {
+    let payload = {
+      location: req.query.location,
+      min: parseInt(req.query.min),
+      max: parseInt(req.query.max)
+    };
+    kafka.make_request("property_list", payload, function(err, result) {
       if (err) {
         console.log("Error searching for property", err);
         res.status(404).send(err);
