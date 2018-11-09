@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import ImageGallery from "templates/ImageGallery";
 import { fetchPropertyDetails, book, messageOwner, saveSearch } from "actions";
-import axios from "axios";
 import PropertyDetails from "./PropertyDetails";
 import { connect } from "react-redux";
 import Header from "./Header";
 import Search from "./Search";
+import Filters from "./Filters";
 import moment from "moment";
 import { Redirect } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
@@ -89,6 +89,10 @@ class Property extends Component {
       <div className="product-page">
         <div className="headers">
           <Header showLogin userInfo={this.props.userInfo} />
+          <Filters
+            onChange={i => this.onChangeSearch(i)}
+            searchQuery={this.props.searchQuery}
+          />
           <Search
             searchQuery={this.props.searchQuery}
             onChange={i => this.onChangeSearch(i)}

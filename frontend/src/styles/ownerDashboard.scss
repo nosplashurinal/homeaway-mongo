@@ -7,6 +7,23 @@
     position: fixed;
     width: 100%;
   }
+  .search {
+    position: absolute;
+    top: 72px;
+    background: white;
+    border-color: #5e6d77;
+    margin-right: auto;
+    margin-left: 30px;
+    z-index: 9999;
+    .DateRangePicker, .location-search, .dropdown-group {
+      border: 1px solid #5e6d77;
+    }
+    button.submit {
+      background: white;
+      border: 1px solid $blue;
+      color: $black;
+    }
+  }
   .properties {
     display: flex;
     .no-properties {
@@ -26,8 +43,9 @@
     width: 100%;
     height: 56px;
     border-bottom: 1px solid $offwhite;
+    border-top: 1px solid $offwhite;
     position: fixed;
-    top: 72px;
+    top: 142px;
     padding-left: 200px;
     background: white;
     z-index: 9999;
@@ -80,14 +98,16 @@
     }
   }
   .top-container {
-    padding-top: 128px;
+    padding-top: 184px;
     .property-list {
       display: flex;
+      flex-wrap: wrap;
       padding: 44px;
       .card {
         width: 250px;
         height: 340px;
         margin-right: 32px;
+        margin-top: 32px; 
         .no-image {
           width: 48px;
           margin: auto;

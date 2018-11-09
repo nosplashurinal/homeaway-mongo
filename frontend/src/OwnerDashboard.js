@@ -5,11 +5,13 @@ import {
   fetchOwnerProperties,
   fetchMessages,
   replyToMessage,
-  updateProfile
+  updateProfile,
+  saveSearch
 } from "actions";
 import Header from "./Header";
 import Inbox from "./Inbox";
 import AddProperty from "./AddProperty";
+import Search from "./Search";
 import { toastr } from "react-redux-toastr";
 import MyProperties from "./MyProperties";
 import { Link, Redirect, Route, Switch } from "react-router-dom";
@@ -219,6 +221,11 @@ class OwnerDashboard extends Component {
             <OwnerDropdown toggle={() => toggle()} isOpen={isOpen} />
           )}
         />
+        <Search
+          searchQuery={this.props.searchQuery}
+          onChange={i => this.onChangeSearch(i)}
+          showFilters
+        />
         <ul className={`${activeNav} nav`}>
           {routes.map((item, key) => (
             <li key={key} className={activeNav === item.value ? "active" : ""}>
@@ -290,7 +297,8 @@ const mapStateToProps = state => ({
   addPropertyStatus: state.ownerdashboard.addPropertyStatus,
   properties: state.ownerdashboard.properties,
   messages: state.ownerdashboard.messages,
-  userInfo: state.login.userInfo
+  userInfo: state.login.userInfo,
+  searchQuery: state.home.search
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -298,7 +306,8 @@ const mapDispatchToProps = dispatch => ({
   fetchMyProperties: id => dispatch(fetchOwnerProperties(id)),
   fetchMessages: id => dispatch(fetchMessages(id)),
   replyToMessage: data => dispatch(replyToMessage(data)),
-  updateProfile: data => dispatch(updateProfile(data))
+  updateProfile: data => dispatch(updateProfile(data)),
+  saveSearch: query => dispatch(saveSearch(query))
 });
 
 export default connect(

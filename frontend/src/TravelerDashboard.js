@@ -1,7 +1,13 @@
 import React, { Component, createRef } from "react";
 import { connect } from "react-redux";
-import { fetchMessagesTLR, replyToMessageTLR, fetchTrips } from "actions";
+import {
+  fetchMessagesTLR,
+  replyToMessageTLR,
+  fetchTrips,
+  saveSearch
+} from "actions";
 import { Button, Form, FormGroup, Input } from "reactstrap";
+import Search from "./Search";
 import Header from "./Header";
 import { Link, Route } from "react-router-dom";
 import { images } from "./images";
@@ -171,6 +177,7 @@ class TravelerDashboard extends Component {
       console.log("User profile updated", response.data);
     });
   };
+  onChangeSearch = query => this.props.saveSearch(query);
   setActiveNav = item => this.setState({ activeNav: item.value });
   render() {
     const { activeFormGroup, activeNav } = this.state;
@@ -179,6 +186,11 @@ class TravelerDashboard extends Component {
     return (
       <div className="traveler">
         <Header />
+        <Search
+          searchQuery={this.props.searchQuery}
+          onChange={i => this.onChangeSearch(i)}
+          showFilters
+        />
         <ul className={`nav ${activePath}`}>
           {routes.map((item, key) => (
             <li key={key} className={activePath === item.value ? "active" : ""}>
@@ -238,13 +250,15 @@ class TravelerDashboard extends Component {
 const mapStateToProps = state => ({
   messages: state.travelerdashboard.messages,
   userInfo: state.login.userInfo,
-  trips: state.travelerdashboard.trips
+  trips: state.travelerdashboard.trips,
+  searchQuery: state.home.search
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchMessages: id => dispatch(fetchMessagesTLR(id)),
   fetchTrips: id => dispatch(fetchTrips(id)),
-  replyToMessage: data => dispatch(replyToMessageTLR(data))
+  replyToMessage: data => dispatch(replyToMessageTLR(data)),
+  saveSearch: query => dispatch(saveSearch(query))
 });
 
 export default connect(

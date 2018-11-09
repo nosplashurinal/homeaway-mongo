@@ -7,6 +7,7 @@ import {
   CardTitle,
   CardSubtitle
 } from "reactstrap";
+import { Link } from "react-router-dom";
 import { Button, Form, FormGroup, Input } from "reactstrap";
 
 class MyProperties extends Component {
@@ -50,13 +51,13 @@ class MyProperties extends Component {
                   )}
                   <CardBody>
                     <CardTitle>{item.name}</CardTitle>
-                    <CardSubtitle>ID: {item._id}</CardSubtitle>
+                    <CardSubtitle>Location: {item.location}</CardSubtitle>
                     {item.bookedFlag === 1 && (
                       <CardText>
                         This property has an upcoming booking.
                       </CardText>
                     )}
-                    <Button>View Details</Button>
+                    <Button><Link to={`/Property/${item._id}`} style={{color: "white"}}>View Details</Link></Button>
                   </CardBody>
                 </Card>
               );
