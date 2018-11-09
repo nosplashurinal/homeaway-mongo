@@ -13,7 +13,7 @@ function handle_request(msg, callback) {
     if (err) callback(null, err);
     if (result) {
       console.log("Email already exists!");
-      callback(null, new Error("Email already exists!"));
+      callback(null, err);
     } else {
       console.log("Email :", msg.email);
       bcrypt.hash(password, saltRounds, (err, hash) => {
